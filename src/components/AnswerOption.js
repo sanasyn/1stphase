@@ -5,25 +5,51 @@ import React from 'react';
 import PropTypes from "prop-types";
 // checked={props.answerContent === props.answer}
 function AnswerOption(props){
-    return(
+    if(props.inputType === 'radio')
+    {
+        return(
     
-        <li className="answerOption">
-            <input 
-                type={props.inputType}
-                className={props.inputClassName}
-                name={props.groupName}
-                
-                id={props.answerContent}
-                value={props.answerContent}
-                onClick={props.onAnswerSelected}
-            />
-            <label className={props.labelClassName} htmlFor={props.answerContent} >
-                {props.answerContent}
-            </label>
+            <li className="answerOption">
+                <input 
+                    type={props.inputType}
+                    className={props.inputClassName}
+                    name={props.groupName}
+                    checked={props.answer === props.answerContent}
+                    id={props.answerContent}
+                    value={props.answerContent}
+                    onClick={props.onAnswerSelected}
+                />
+                <label className={props.labelClassName} htmlFor={props.answerContent} >
+                    {props.answerContent}
+                </label>
+    
+            </li>
+    
+        );
+    }
 
-        </li>
+    if(props.inputType === 'checkbox')
+    {
+        return(
+    
+            <li className="answerOption">
+                <input 
+                    type={props.inputType}
+                    className={props.inputClassName}
+                    name={props.groupName}
+                    id={props.answerContent}
+                    value={props.answerContent}
+                    onClick={props.onAnswerSelected}
+                />
+                <label className={props.labelClassName} htmlFor={props.answerContent} >
+                    {props.answerContent}
+                </label>
+    
+            </li>
+    
+        );
+    }
 
-    );
 }
 
 AnswerOption.propTypes={
