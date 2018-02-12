@@ -18,7 +18,7 @@ class App extends Component {
       answerInputType:'',
       answerOptions: [],
       followupQ:'',
-      inFolloupQ: false,
+      folloupQFlag: false,
       followupQCnt:'',
       answer: '',
       result:''
@@ -32,36 +32,13 @@ class App extends Component {
   }
 
   componentWillMount(){
-   // const shuffledAnswerOptions = quizQuestions.map((question) => this.shuffleArray(question.answers));
     
     this.setState({
       question: questionaire[0].question,
-      //answerOptions:shuffledAnswerOptions[0]
       answerInputType: questionaire[0].type,
       answerOptions: questionaire[0].options,
       followupQ:questionaire[0].followupQ
     });
-  }
-
-  shuffleArray(array){
-    var currentIndex = array.length, temporaryValue, randomeIndex;
-
-    //while there is remain elements to shuffle
-
-    while(0 !== currentIndex)
-    {
-      //pick a remaining element
-      randomeIndex = Math.floor(Math.random()* currentIndex);
-      currentIndex -= 1;
-
-      //swap it with the current element
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomeIndex];
-      array[randomeIndex] = temporaryValue;
-
-    }
-
-    return array;
   }
 
   setUserAnswer(answer){
@@ -89,7 +66,8 @@ class App extends Component {
       answerInputType:questionaire[counter].type,
       answerOptions: questionaire[counter].options,
       followupQ:questionaire[counter].followupQ,
-      inFolloupQ:false,
+      followupQFlag:false,
+      followupQCnt:'',
       answer: ''
     });
   }
@@ -102,7 +80,7 @@ class App extends Component {
       question: questionaire[counter].followupQ[followCnt].question,
       answerInputType:questionaire[counter].followupQ[followCnt].type,
       answerOptions: questionaire[counter].followupQ[followCnt].options,
-      inFolloupQ:true,
+      followupQFlag:true,
       answer:''
     });
   }
@@ -131,60 +109,84 @@ setResults(result){
   //this function will set the answer for the current question and check for any follwo up question and display follow up questions.
   handleAnswerSelected(event){
     var answer = event.currentTarget.value;
-    const counter = this.state.counter;
+    //const counter = this.state.counter;
     this.setUserAnswer(answer);
-    console.log("answer: "+ answer)
-   
-    //console.log("in answer selected function");
-    //check if current question has any followup questions when the answer to the current question is yes
-    if(answer === 'Yes' && typeof questionaire[counter].followupQ !=='string' && !this.state.inFolloupQ)
+    //console.log("answer: "+ answer)
+    
+  }
+
+  //when next button is clicked, set up the next question to be displayed
+ handleClickNext(){
+   //counter for current question
+    const counter = this.state.counter;
+
+    //check if the current question a follow up question
+    if(this.state.followupQFlag)
     {
-      //check # of items in the followupQ array
-      console.log("# of followup Qs: "+ questionaire[counter].followupQ.length);
-
-      //in followup question section
-      if(this.state.inFolloupQ)
+      //current question is a follow up question
+      //checking if this is the last follow up qeustion
+      if(this.followCnt < questionaire[counter].followupQ.length-1)
       {
-        if(this.state.followupQCnt < questionaire[counter].followupQ.length)
-        {
-          var followupQCnt= this.state.followupQCnt+1;
+        //current question is not the last followup question
+         //set up follow up question to display
+       var followupQCnt= this.state.followupQCnt+1;
 
-          this.setState({
-            followupCnt: followupQCnt
-          })
+       this.setState({
+        followupQCnt: followupQCnt
+       })
 
-          setTimeout(()=>this.setFollowupQuestion(counter,followupQCnt),300);
-        }
+       setTimeout(()=>this.setFollowupQuestion(counter,followupQCnt),300);
 
       }
       else
       {
-        //first time in follow up section
-        this.setState({
-          followupQCnt: 0
-        });
-
-        //set up followupQuestion
-      setTimeout(()=>this.setFollowupQuestion(counter,this.state.followupQCnt),300);
+        //current question is the last follow up question so set up the next question
+        setTimeout(()=>this.setNextQuestion(),300);
       }
-      
 
       
+
     }
-    
-  }
-
-
-  //when next button is clicked, set up the next question to be displayed
- handleClickNext(){
-    if(this.state.questionId < questionaire.length)
+    else
     {
-      setTimeout(()=>this.setNextQuestion(),300);
-    }
-    else{
-      setTimeout(()=>this.setResults(this.getResults()),300);
-    }
+      //current question is not a follow up question
+      //
+      if (this.state.answer === 'Yes' && typeof questionaire[counter].followupQ !=='string')
+      {
+        //this current question's answer is yes and current question has follow up questions
+         if(typeof this.state.followupQCnt === 'string')
+        {
+          //first time in follow up question
+          //set the follow question's counter to 0
+          this.setState({
+            followupQCnt: 0
+          });
 
+          
+           //set up followupQuestion
+        setTimeout(()=>this.setFollowupQuestion(counter,0),300);
+
+        }
+
+
+      }
+      else{
+        //set up next question as normal
+        if(this.state.questionId < questionaire.length)
+        {
+          setTimeout(()=>this.setNextQuestion(),300);
+        }
+        else{
+          //reach to end of the question, send the answer back and diplay result
+          //setTimeout(()=>this.setResults(this.getResults()),300);
+          console.log("action: send the input to matching and display results")
+        }
+
+      }
+
+
+
+    }
 
   }
 
