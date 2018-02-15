@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Quiz from './components/Quiz';
 import questionaire from './api/questionaire';
-// import update from 'react-addons-update';
+ import update from 'react-addons-update';
 import Result from './components/Result';
 // import AnswerOption from './components/AnswerOption'
 
@@ -20,13 +20,32 @@ class App extends Component {
       followupQ:'',
       folloupQFlag: false,
       followupQCnt:'',
-      answer: '',
+      currAnswer:'',
+      answer:{
+        zipcode:"",
+        age: "",
+        sex: "",
+        geneticTesting: "no",
+        mri: "no",
+        pet: "no",
+        spinalTap: "no",
+        memoryEval: {
+          taken: false,
+          mmse: "",
+          moca: "",
+          cdr: ""
+        },
+        prescriptionDuration: 0,
+        medications: []
+      },
       result:''
     }
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
 
     this.handleClickNext=this.handleClickNext.bind(this);
+
+    this.handleTextChange=this.handleTextChange.bind(this);
 
 
   }
@@ -68,7 +87,7 @@ class App extends Component {
       followupQ:questionaire[counter].followupQ,
       followupQFlag:false,
       followupQCnt:'',
-      answer: ''
+      currAnswer: ''
     });
   }
 
@@ -81,7 +100,7 @@ class App extends Component {
       answerInputType:questionaire[counter].followupQ[followCnt].type,
       answerOptions: questionaire[counter].followupQ[followCnt].options,
       followupQFlag:true,
-      answer:''
+      currAnswer:''
     });
   }
 
@@ -110,8 +129,19 @@ setResults(result){
   handleAnswerSelected(event){
     var answer = event.currentTarget.value;
     //const counter = this.state.counter;
-    this.setUserAnswer(answer);
+    //this.setUserAnswer(answer);
     //console.log("answer: "+ answer)
+    this.setState({
+      //answersCount: updateAnswersCount,
+      currAnswer:answer
+    });
+    
+  }
+
+  handleTextChange(event){
+    this.setState({
+      currAnswer: event.currentTarget.value
+    });
     
   }
 
@@ -120,12 +150,96 @@ setResults(result){
    //counter for current question
     const counter = this.state.counter;
 
+    //
+    //put the currAnswer value into the answer object
+    //
+    switch(counter)
+    {
+      case 0:
+        //for question 1 zipcode
+        var updateAnswer = update(this.state.answer,{zipcode:{$set:this.state.currAnswer}});
+        this.setState({
+          answer:updateAnswer
+        });
+
+        break;
+
+      case 1:
+        //for question 2 age
+         updateAnswer = update(this.state.answer,{age:{$set:this.state.currAnswer}});
+        this.setState({
+          answer:updateAnswer
+        });
+        break;
+
+      case 2:
+        //for question 3 sex
+         updateAnswer = update(this.state.answer,{sex:{$set:this.state.currAnswer}});
+        this.setState({
+          answer:updateAnswer
+        });
+        break;
+      
+      case 3:
+        //for question 4 genetic testing
+        if(this.state.followupQCnt ===0 && this.state.currAnswer==='Yes')
+        { 
+          updateAnswer = update(this.state.answer,{geneticTesting:{$set:"apoE4_1"}});
+        }
+        else
+        {
+          updateAnswer = update(this.state.answer,{geneticTesting:{$set:"no"}});
+        }
+        this.setState({
+          answer:updateAnswer
+        });
+        break;
+      
+      case 4:
+        //for question 5 MRI
+        updateAnswer = update(this.state.answer,{mri:{$set:this.state.currAnswer}});
+        this.setState({
+          answer:updateAnswer
+        });
+      
+      break;
+      
+      case 5:
+        //for question 6 PET Scan
+        if(this.state.followupQCnt ===0 && this.state.currAnswer==='Yes')
+        { 
+          updateAnswer = update(this.state.answer,{pet:{$set:"amyloidBeta_1"}});
+        }
+        else
+        {
+          updateAnswer = update(this.state.answer,{pet:{$set:"no"}});
+        }
+        this.setState({
+          answer:updateAnswer
+        });
+      break;
+
+      case 6:
+        //for question 7 spinal tap 
+        //need to figure out how to handle this one
+      break;
+
+      default:
+
+        break;
+
+    }
+
+    //
+    //below is the flow to set up the next question to display
+    //
     //check if the current question a follow up question
     if(this.state.followupQFlag)
     {
       //current question is a follow up question
       //checking if this is the last follow up qeustion
-      if(this.followCnt < questionaire[counter].followupQ.length-1)
+      console.log("total # of follow up q: " +questionaire[counter].followupQ.length);
+      if(this.state.followupQCnt < questionaire[counter].followupQ.length-1)
       {
         //current question is not the last followup question
          //set up follow up question to display
@@ -151,7 +265,7 @@ setResults(result){
     {
       //current question is not a follow up question
       //
-      if (this.state.answer === 'Yes' && typeof questionaire[counter].followupQ !=='string')
+      if (this.state.currAnswer === 'Yes' && typeof questionaire[counter].followupQ !=='string')
       {
         //this current question's answer is yes and current question has follow up questions
          if(typeof this.state.followupQCnt === 'string')
@@ -193,14 +307,15 @@ setResults(result){
   renderQuiz(){
     return (
       <Quiz
-        answer={this.state.answer}
+        currAnswer={this.state.currAnswer}
         answerInputType={this.state.answerInputType}
         answerOptions ={this.state.answerOptions}
         questionId={this.state.questionId}
         question={this.state.question}
         questionTotal={questionaire.length}
         onAnswerSelected ={this.handleAnswerSelected}
-        onClickNext={this.handleClickNext}/>
+        onClickNext={this.handleClickNext}
+        onTextChange={this.handleTextChange}/>
     );
   }
 

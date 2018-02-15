@@ -36,8 +36,10 @@ function Quiz(props){
                 answerInputType={props.answerInputType}
                 answerOptions={props.answerOptions}
                 questionId={props.questionId}
-                answer={props.answer}
-                onAnswerSelected={props.onAnswerSelected}/>
+                currAnswer={props.currAnswer}
+                onAnswerSelected={props.onAnswerSelected}
+                onTextChange={props.onTextChange}
+                />
                 
 
                 <button onClick={props.onClickNext}>

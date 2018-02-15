@@ -42,13 +42,43 @@ function AnswerInput(props){
         );
     }
     
+    function renderMultiTextInputOption(data){
+        return(
+            <AnswerOption 
+                key={data}
+                inputClassName='textCustomInput'
+                labelClassName="textCustomLabel"
+                answerContent={data}
+                inputType={props.answerInputType}
+                groupName={data}
+                answer={props.answer}
+                questionId={props.questionId}
+                onAnswerSelected={props.onAnswerSelected}
+                onTextChange={props.onTextChange}
+            />
+
+        );
+    }
+
+
     function determineInputType(type){
        
         switch(type){
             case "text":
-                return(
-                    <input type="text" id="age" name="age"/>
-                );
+                if(typeof props.answerOptions ==='string')
+                {
+                    
+                    return(
+                        <input type="text" name={props.questionId} value={props.currAnswer} onChange={props.onTextChange}/>
+                    );
+                }else
+                {
+                    return(
+                        <ul className="answerOptions">
+                        {props.answerOptions.map(renderMultiTextInputOption)}
+                        </ul>
+                    );
+                }
 
             case "radio":
                 return(

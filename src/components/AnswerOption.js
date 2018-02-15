@@ -50,6 +50,26 @@ function AnswerOption(props){
         );
     }
 
+    if(props.inputType === 'text')
+    {
+        return(
+    
+            <li className="answerOption">
+                <label className={props.labelClassName} htmlFor={props.answerContent} >
+                    {props.answerContent} :
+                </label>
+                <input 
+                    type={props.inputType}
+                    className={props.inputClassName}
+                    name={props.groupName}
+                    value={props.currAnswer}
+                    onChange={props.onTextChange}
+                />
+            </li>
+    
+        );
+    }
+
 }
 
 AnswerOption.propTypes={
