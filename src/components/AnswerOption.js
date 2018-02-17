@@ -14,10 +14,10 @@ function AnswerOption(props){
                     type={props.inputType}
                     className={props.inputClassName}
                     name={props.groupName}
-                    checked={props.answer === props.answerContent}
+                    checked={props.currAnswer === props.answerContent}
                     id={props.answerContent}
                     value={props.answerContent}
-                    onClick={props.onAnswerSelected}
+                    onChange={props.onAnswerSelected}
                 />
                 <label className={props.labelClassName} htmlFor={props.answerContent} >
                     {props.answerContent}
@@ -39,7 +39,7 @@ function AnswerOption(props){
                     name={props.groupName}
                     id={props.answerContent}
                     value={props.answerContent}
-                    onClick={props.onAnswerSelected}
+                    onChange={props.onAnswerSelected}
                 />
                 <label className={props.labelClassName} htmlFor={props.answerContent} >
                     {props.answerContent}
@@ -75,7 +75,7 @@ function AnswerOption(props){
 AnswerOption.propTypes={
     // answerType: PropTypes.string.isRequired,
     answerContent: PropTypes.string.isRequired,
-    answer: PropTypes.string.isRequired,
+    currAnswer: PropTypes.string.isRequired,
     onAnswerSelected: PropTypes.func.isRequired
 };
 

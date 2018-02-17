@@ -36,7 +36,8 @@ class App extends Component {
           cdr: ""
         },
         prescriptionDuration: 0,
-        medications: []
+        medications: [],
+        primaryCare:"no"
       },
       result:''
     }
@@ -91,14 +92,14 @@ class App extends Component {
     });
   }
 
-  setFollowupQuestion(counter,followCnt){
+  setFollowupQuestion(counter,followupQCnt){
     //display follow questions
     this.setState({
       counter: counter,
       questionId: this.state.questionId,
-      question: questionaire[counter].followupQ[followCnt].question,
-      answerInputType:questionaire[counter].followupQ[followCnt].type,
-      answerOptions: questionaire[counter].followupQ[followCnt].options,
+      question: questionaire[counter].followupQ[followupQCnt].question,
+      answerInputType:questionaire[counter].followupQ[followupQCnt].type,
+      answerOptions: questionaire[counter].followupQ[followupQCnt].options,
       followupQFlag:true,
       currAnswer:''
     });
@@ -127,10 +128,55 @@ setResults(result){
 
   //this function will set the answer for the current question and check for any follwo up question and display follow up questions.
   handleAnswerSelected(event){
-    var answer = event.currentTarget.value;
-    //const counter = this.state.counter;
     //this.setUserAnswer(answer);
-    //console.log("answer: "+ answer)
+    var answer=this.state.currAnswer;
+    
+    
+      if(this.state.counter === 6 && this.state.followupQCnt === 0 )
+      {
+        if((answer=== "amyloidBeta_1" && event.currentTarget.checked && event.currentTarget.value === "P-Tau") || (answer === "pTau_1" && event.currentTarget.checked && event.currentTarget.value === "Amyloid Beta"))
+        {
+          answer = "both";
+        }else if(event.currentTarget.checked && event.currentTarget.value === "Amyloid Beta")
+        {
+          answer = "amyloidBeta_1";
+        }else if(event.currentTarget.checked && event.currentTarget.value === "P-Tau" )
+        {
+          answer = "pTau_1";
+        }else if(this.state.currAnswer==="both" && event.currentTarget.value === "Amyloid Beta")
+        {
+          answer = "pTau_1";
+        }else if(this.state.currAnswer==="both" && event.currentTarget.value === "P-Tau")
+        {
+          answer = "amyloidBeta_1";
+        }
+
+      }else if(this.state.counter === 8 && this.state.followupQCnt ===1)
+      {
+        if(event.currentTarget.checked && !answer)
+        {
+          //grab the first element
+          answer=[event.currentTarget.value];
+        }
+        else if(event.currentTarget.checked && answer.indexOf(event.currentTarget.value) <= -1)
+        {
+          //when answer has 1+ elements, check if current checked element are already in the array to be stored.
+          answer.push(event.currentTarget.value);
+        }else{
+          console.log("event.currentTarget.checked: "+ event.currentTarget.checked);
+          console.log("event.currentTarget.value: "+ event.currentTarget.value);
+          console.log("event.currentTarget.name: "+ event.currentTarget.name);
+          console.log("answer before splice: ", answer);
+          var tempCheckedValue=event.currentTarget.value;
+          answer.splice(answer.indexOf(tempCheckedValue),1);
+          console.log("answer after splice: ", answer);
+        }
+
+      }else
+      {
+        answer=event.currentTarget.value;
+      }
+    
     this.setState({
       //answersCount: updateAnswersCount,
       currAnswer:answer
@@ -149,6 +195,7 @@ setResults(result){
  handleClickNext(){
    //counter for current question
     const counter = this.state.counter;
+    var updateAnswer=this.state.answer;
 
     //
     //put the currAnswer value into the answer object
@@ -157,7 +204,7 @@ setResults(result){
     {
       case 0:
         //for question 1 zipcode
-        var updateAnswer = update(this.state.answer,{zipcode:{$set:this.state.currAnswer}});
+        updateAnswer = update(this.state.answer,{zipcode:{$set:this.state.currAnswer}});
         this.setState({
           answer:updateAnswer
         });
@@ -174,7 +221,7 @@ setResults(result){
 
       case 2:
         //for question 3 sex
-         updateAnswer = update(this.state.answer,{sex:{$set:this.state.currAnswer}});
+         updateAnswer = update(this.state.answer,{sex:{$set:this.state.currAnswer.toLowerCase()}});
         this.setState({
           answer:updateAnswer
         });
@@ -197,7 +244,7 @@ setResults(result){
       
       case 4:
         //for question 5 MRI
-        updateAnswer = update(this.state.answer,{mri:{$set:this.state.currAnswer}});
+        updateAnswer = update(this.state.answer,{mri:{$set:this.state.currAnswer.toLowerCase()}});
         this.setState({
           answer:updateAnswer
         });
@@ -221,7 +268,45 @@ setResults(result){
 
       case 6:
         //for question 7 spinal tap 
-        //need to figure out how to handle this one
+        updateAnswer = update(this.state.answer,{spinalTap:{$set:this.state.currAnswer}});
+        this.setState({
+          answer:updateAnswer
+        });
+
+      break;
+
+      case 7:
+        //for question 8 memory testing
+
+
+      break;
+
+      case 8:
+        //for question 9 medication 
+        if(this.state.followupQCnt === 0)
+        { 
+          console.log("currAnswer: "+ this.state.currAnswer);
+          updateAnswer = update(this.state.answer,{prescriptionDuration:{$set:this.state.currAnswer}});
+        }
+        
+        if(this.state.followupQCnt ===1)
+        { 
+          updateAnswer = update(this.state.answer,{medications:{$push:this.state.currAnswer}});
+          
+        }
+
+        this.setState({
+          answer:updateAnswer
+        });
+      
+      break;
+
+      case 9:
+        //for question 10 primary care
+        updateAnswer = update(this.state.answer,{primaryCare:{$set:this.state.currAnswer.toLowerCase()}});
+        this.setState({
+          answer:updateAnswer
+        });
       break;
 
       default:
@@ -276,7 +361,6 @@ setResults(result){
             followupQCnt: 0
           });
 
-          
            //set up followupQuestion
         setTimeout(()=>this.setFollowupQuestion(counter,0),300);
 

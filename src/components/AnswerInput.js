@@ -17,7 +17,7 @@ function AnswerInput(props){
                 answerContent={data}
                 inputType={props.answerInputType}
                 groupName="radioGroup"
-                answer={props.answer}
+                currAnswer={props.currAnswer}
                 questionId={props.questionId}
                 onAnswerSelected={props.onAnswerSelected}
             />
@@ -34,7 +34,7 @@ function AnswerInput(props){
                 answerContent={data}
                 inputType={props.answerInputType}
                 groupName={data}
-                answer={props.answer}
+                currAnswer={props.currAnswer}
                 questionId={props.questionId}
                 onAnswerSelected={props.onAnswerSelected}
             />
@@ -51,7 +51,7 @@ function AnswerInput(props){
                 answerContent={data}
                 inputType={props.answerInputType}
                 groupName={data}
-                answer={props.answer}
+                currAnswer={props.curAnswer}
                 questionId={props.questionId}
                 onAnswerSelected={props.onAnswerSelected}
                 onTextChange={props.onTextChange}
@@ -119,7 +119,7 @@ function AnswerInput(props){
 AnswerInput.propTypes={
     answerInputType: PropTypes.string.isRequired,
     // answerContent: PropTypes.string.isRequired,
-    answer: PropTypes.string.isRequired,
+    currAnswer: PropTypes.string.isRequired,
    onAnswerSelected: PropTypes.func.isRequired
 };
 
