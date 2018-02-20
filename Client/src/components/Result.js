@@ -1,5 +1,5 @@
 //display the result
-
+//this will chagne to our result display page
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
