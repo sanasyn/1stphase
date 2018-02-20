@@ -52,7 +52,7 @@ function Quiz(props){
 }
 
 Quiz.propTypes ={
-    currAnswer: PropTypes.string.isRequired,
+    //currAnswer: PropTypes.string.isRequired,
     //answerOptions:PropTypes.array.isRequired,
     //counter: PropTypes.number.isRequired,
     question: PropTypes.string.isRequired,

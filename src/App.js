@@ -18,7 +18,7 @@ class App extends Component {
       answerInputType:'',
       answerOptions: [],
       followupQ:'',
-      folloupQFlag: false,
+      followupQFlag: false,
       followupQCnt:'',
       currAnswer:'',
       answer:{
@@ -31,9 +31,9 @@ class App extends Component {
         spinalTap: "no",
         memoryEval: {
           taken: false,
-          mmse: "",
-          moca: "",
-          cdr: ""
+          MMSE: "",
+          MoCA: "",
+          CDR: ""
         },
         prescriptionDuration: 0,
         medications: [],
@@ -163,13 +163,12 @@ setResults(result){
           //when answer has 1+ elements, check if current checked element are already in the array to be stored.
           answer.push(event.currentTarget.value);
         }else{
-          console.log("event.currentTarget.checked: "+ event.currentTarget.checked);
-          console.log("event.currentTarget.value: "+ event.currentTarget.value);
-          console.log("event.currentTarget.name: "+ event.currentTarget.name);
-          console.log("answer before splice: ", answer);
+          //console.log("event.currentTarget.checked: "+ event.currentTarget.checked);
+          
+          //console.log("answer before splice: ", answer);
           var tempCheckedValue=event.currentTarget.value;
           answer.splice(answer.indexOf(tempCheckedValue),1);
-          console.log("answer after splice: ", answer);
+          //console.log("answer after splice: ", answer);
         }
 
       }else
@@ -185,8 +184,42 @@ setResults(result){
   }
 
   handleTextChange(event){
+    var answer= this.state.currAnswer;
+    
+    if (this.state.counter === 7)
+    {
+      //console.log("event.currentTarget.value: "+ event.currentTarget.value);
+      //console.log("event.currentTarget.name: "+ event.currentTarget.name);
+      //when we are in question#8 memory testing
+      if(typeof answer === "string")
+      {
+        //initialize the answer variable into object to store multiple text input from the memory testing question
+        answer={
+          MMSE:"",
+          MoCA:"",
+          CDR:""
+        }
+      }
+      else
+      {
+        answer[event.currentTarget.name] = event.currentTarget.value;
+      }
+
+      // if(event.currentTarget.name === "MMSE")
+      // {
+      //   answer.MMSE=event.currentTarget.value;
+      // }
+
+     // console.log("in question#8, answer: ", answer);
+
+    }
+    else{
+      answer=event.currentTarget.value;
+    }
+
+    
     this.setState({
-      currAnswer: event.currentTarget.value
+      currAnswer: answer
     });
     
   }
@@ -277,15 +310,29 @@ setResults(result){
 
       case 7:
         //for question 8 memory testing
+        if(this.state.followupQFlag)
+        {
+          console.log("currAnswer: "+ this.state.currAnswer);
+          //in followup question
+          updateAnswer = update(this.state.answer,{memoryEval: {$merge:this.state.currAnswer}});
+          console.log("updateAnswer: ", updateAnswer);
+          
+        }
+        else{
+          //in regular question
+          updateAnswer = update(this.state.answer,{memoryEval: {taken:{$set:true}}});
 
-
+        }
+        this.setState({
+          answer:updateAnswer
+        });
       break;
 
       case 8:
         //for question 9 medication 
         if(this.state.followupQCnt === 0)
         { 
-          console.log("currAnswer: "+ this.state.currAnswer);
+          
           updateAnswer = update(this.state.answer,{prescriptionDuration:{$set:this.state.currAnswer}});
         }
         
