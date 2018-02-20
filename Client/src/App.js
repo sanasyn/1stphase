@@ -105,26 +105,6 @@ class App extends Component {
     });
   }
 
-  //This function calculates which answer type (Sony, Microsoft or Nintendo in our case) has the highest number
-  getResults(){
-    const answersCount = this.state.answersCount;
-    //utilising Object.keys to return an array of strings that represent all the properties of an object
-    //this will return array with the answer strings
-    const answerCountKeys= Object.keys(answersCount);
-    const answerCountValues = answerCountKeys.map((key)=>answersCount[key]);
-    const maxAnswerCount = Math.max.apply(null, answerCountValues);
-
-    return answerCountKeys.filter((key)=> answersCount[key] === maxAnswerCount);
-  }
-
-setResults(result){
-  if(result.length ===1){
-    this.setState({result: result[0]});
-  }
-  else {
-    this.setState({result:'Undetermined'});
-  }
-}
 
   //this function will set the answer for the current question and check for any follwo up question and display follow up questions.
   handleAnswerSelected(event){
