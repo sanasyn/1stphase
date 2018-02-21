@@ -46,20 +46,20 @@ function spinalQuery(spinal) {
 	if (spinal === 'amyloidBeta') {
 		spinalArray = ['%spinal%']
 	}
-	console.log("SPINAL ARRAY: ", spinalArray);
+	// console.log("SPINAL ARRAY: ", spinalArray);
 	return spinalArray;
 }
 
 // Builds query array for memory evaluations. We do not care about
 function memoryEvalArray(queryEval) {
 	let queryMemArray = [];
-	if (queryEval.mmse !== 'no') {
+	if (queryEval.MMSE !== 'no') {
 		queryMemArray.push('%MMSE%')
 	}
-	if (queryEval.moca !== 'no') {
+	if (queryEval.MoCA !== 'no') {
 		queryMemArray.push('%MOCA%')
 	}
-	if (queryEval.cdr !== 'no') {
+	if (queryEval.CDR !== 'no') {
 		queryMemArray.push('%CDR%')
 	}
 

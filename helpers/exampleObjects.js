@@ -9,9 +9,9 @@ let complete =
 		"pet": "amyloidBeta_0",
 		"spinalTap": "no",
 		"memoryEval": {
-			"mmse": 25,
-			"moca": 25,
-			"cdr": 1
+			"MMSE": 25,
+			"MoCA": 25,
+			"CDR": 1
 		},
 		"prescriptionDuration": 8,
 		"medications": ["aricept", "exelon", "razadyneEr", "namenda"]
@@ -25,9 +25,9 @@ let basic =
 		"pet": "no",
 		"spinalTap": "no",
 		"memoryEval": {
-			"mmse": "no",
-			"moca": "no",
-			"cdr": "no"
+			"MMSE": "no",
+			"MoCA": "no",
+			"CDR": "no"
 		},
 		"prescriptionDuration": 8,
 		"medications": ["namenda"]
