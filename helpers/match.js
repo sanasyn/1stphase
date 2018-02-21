@@ -1,4 +1,4 @@
-const config = require('../config/config');
+const config = require('../config/config').heroku;
 const pg = require('pg');
 const knex = require('knex')(getConnectionOptions());
 
@@ -8,22 +8,25 @@ const spinalQuery = require('./translate').spinalQuery;
 const mriSearch = require('./translate').mriSearch;
 const memoryEvalArray = require('./translate').memoryEvalArray;
 const medicationsArray = require('./translate').medicationsArray;
-const query = require('./exampleObjects').complete;
+// const query = require('./exampleObjects').complete;
 
 function getConnectionOptions() {
 	return {
-		client: config.local.client,
+		client: config.client,
 		connection : {
-			host: config.local.host,
-			user: config.local.user,
-			password: config.local.password,
-			database: config.local.database
+			host: config.host,
+			user: config.user,
+			password: config.password,
+			database: config.database,
+			ssl: true
 		}
 	}
 }
 
-function runQuery() {
-	return knex.count()
+function runQuery(req, res) {
+	// console.log("BODY: ", req.body);
+	let query = req.body;
+	return knex.select('nct_id', 'official_title')
 	.from('aact_master')
 	.where(function() {
 		this
@@ -39,60 +42,28 @@ function runQuery() {
 		.where('gender', query.gender)
 		.orWhere('gender', 'All')
 	})
-	.andWhere(function() {
-		this
-		.where(knex.raw("criteria_inc like all ( :spinalSearch)", 
+	.andWhere(knex.raw("criteria_inc like all ( :spinalSearch)", 
 			{spinalSearch: spinalQuery(query.spinalTap)}
-			));
-	})
-	.andWhere(function() {
-		this
-		.where(knex.raw("criteria_inc like ( :mriSearch)", 
+			))
+	.andWhere(knex.raw("criteria_inc like ( :mriSearch)", 
 			{mriSearch: mriSearch(query.mri)}
-			));
-	})
-	.andWhere(function() {
-		this
-		.where(knex.raw("criteria_inc like all ( :arraySearch)", 
+			))
+	.andWhere(knex.raw("criteria_inc like all ( :arraySearch)", 
 			{arraySearch: petQuery(query.pet)}
-			));
-	})
-	.andWhere(function() {
-		this
-		.where(knex.raw("criteria_inc like any ( :arraySearch)", 
-			{arraySearch: memoryEvalArray(query.memoryEval)}
-			));
-	})
-	.andWhere(function() {
-		this
-		.where(knex.raw("criteria_inc like any ( :arraySearch)", 
+			))
+	.andWhere(knex.raw("criteria_inc like any ( :arraySearch)", 
 			{arraySearch: medicationsArray(query.medications)}
-			));
-		// .where(knex.raw("criteria_inc like any (array['%donepezil%', '%aricept%', '%cholinesterase%', '%rivastigmine%', '%exelon%', '%galantamine%', '%razadyne%', '%memantine%', '%namenda%' ])"));
-		// .where(knex.raw("criteria_inc like any (array ?,?,?,?,?,?,?,?,?)", medicationsArray(query.medications)));
-		// .where(knex.raw("criteria_inc like any (array['%donepezil%','%memantine%'])"));
-		// .where(knex.raw("criteria_inc ~ 'donepezil'"))
+			))
+	.limit(10)
+	.then(rows => {
+		res.send(rows)
 	})
-	.then(function(rows) {
-		console.log(rows);
-	})
-	.catch(function(error){
-		console.log(error)
+	.catch((error) => {
+		res.send(new Error('Error querying database. ', error));
 	});
 }
 
-function testQuery() {
-	return knex.select()
-	.from('aact_master')
-	.where('nct_id','NCT02951559')
-	.then(function(rows) {
-		console.log(rows);
-	})
-	.catch(function(error){
-		console.log(error)
-	});
+// runQuery();
+module.exports = {
+	runQuery: runQuery,
 }
-
-// medicationsArray(query.medications);
-runQuery();
-// testQuery();
