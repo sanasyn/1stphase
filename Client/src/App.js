@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import Quiz from './components/Quiz';
 import questionaire from './api/questionaire';
- import update from 'react-addons-update';
+import update from 'react-addons-update';
 import Result from './components/Result';
+import axios from 'axios';
 // import AnswerOption from './components/AnswerOption'
 
 class App extends Component {
@@ -13,47 +14,45 @@ class App extends Component {
     this.state ={
       counter:0,
       questionId: 1,
-      question: '',
-      answerInputType:'',
+      question: "",
+      answerInputType:"",
       answerOptions: [],
-      followupQ:'',
+      followupQ:"",
       followupQFlag: false,
-      followupQCnt:'',
-      currAnswer:'',
+      followupQCnt:"",
+      currAnswer:"",
+      haveResults:false,
       answer:{
         zipcode:"",
         age: "",
         sex: "",
-        geneticTesting: "no",
-        mri: "no",
+        geneticTesting: "",
+        mri: "",
         pet: "no",
-        spinalTap: "no",
+        spinalTap: "",
         memoryEval: {
           taken: false,
-          MMSE: "",
-          MoCA: "",
-          CDR: ""
+          MMSE: "no",
+          MoCA: "no",
+          CDR: "no"
         },
         prescriptionDuration: 0,
         medications: [],
-        primaryCare:"no"
+        primaryCare:"",
       },
       inputError:true,
-      result:''
+      results:[]
     }
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
-
     this.handleClickNext=this.handleClickNext.bind(this);
-
     this.handleTextChange=this.handleTextChange.bind(this);
-
     this.validateInputValue=this.validateInputValue.bind(this);
+    this.handleSubmit=this.handleSubmit.bind(this);
 
   }
 
-  componentWillMount(){
-    
+  componentWillMount() {
     this.setState({
       question: questionaire[0].question,
       answerInputType: questionaire[0].type,
@@ -93,7 +92,7 @@ class App extends Component {
     });
   }
 
-  setFollowupQuestion(counter,followupQCnt){
+  setFollowupQuestion(counter,followupQCnt) {
     //display follow questions
     this.setState({
       counter: counter,
@@ -108,7 +107,7 @@ class App extends Component {
 
 
   //this function will set the answer for the current question and check for any follwo up question and display follow up questions.
-  handleAnswerSelected(event){
+  handleAnswerSelected(event) {
     //this.setUserAnswer(answer);
     var answer=this.state.currAnswer;
     
@@ -164,7 +163,7 @@ class App extends Component {
     
   }
 
-  handleTextChange(event){
+  handleTextChange(event) {
     var answer= this.state.currAnswer;
     
     if (this.state.counter === 7)
@@ -196,9 +195,7 @@ class App extends Component {
     }
     else{
       answer=event.currentTarget.value;
-    }
-
-    
+    } 
     this.setState({
       currAnswer: answer
     });
@@ -206,18 +203,15 @@ class App extends Component {
     // this.setState({
     //   inputError:this.validateInputValue(this.state.currAnswer)
     // })
-    
-    
+     
   }
 
   //when next button is clicked, set up the next question to be displayed
- handleClickNext()
-  {
+ handleClickNext() {
    //counter for current question
     const counter = this.state.counter;
     var updateAnswer=this.state.answer;
 
-    //
     //put the currAnswer value into the answer object
     //
     switch(counter)
@@ -241,7 +235,7 @@ class App extends Component {
 
       case 2:
         //for question 3 sex
-         updateAnswer = update(this.state.answer,{sex:{$set:this.state.currAnswer.toLowerCase()}});
+         updateAnswer = update(this.state.answer,{sex:{$set:this.state.currAnswer}});
         this.setState({
           answer:updateAnswer
         });
@@ -288,7 +282,7 @@ class App extends Component {
 
       case 6:
         //for question 7 spinal tap 
-        updateAnswer = update(this.state.answer,{spinalTap:{$set:this.state.currAnswer}});
+        updateAnswer = update(this.state.answer,{spinalTap:{$set:this.state.currAnswer.toLowerCase()}});
         this.setState({
           answer:updateAnswer
         });
@@ -353,42 +347,31 @@ class App extends Component {
     //below is the flow to set up the next question to display
     //
     //check if the current question a follow up question
-    if(this.state.followupQFlag)
-    {
+    if (this.state.followupQFlag) {
       //current question is a follow up question
       //checking if this is the last follow up qeustion
       console.log("total # of follow up q: " +questionaire[counter].followupQ.length);
-      if(this.state.followupQCnt < questionaire[counter].followupQ.length-1)
-      {
+
+      if (this.state.followupQCnt < questionaire[counter].followupQ.length-1) {
         //current question is not the last followup question
          //set up follow up question to display
        var followupQCnt= this.state.followupQCnt+1;
-
        this.setState({
         followupQCnt: followupQCnt
        })
-
        setTimeout(()=>this.setFollowupQuestion(counter,followupQCnt),300);
 
-      }
-      else
-      {
+      } else {
         //current question is the last follow up question so set up the next question
         setTimeout(()=>this.setNextQuestion(),300);
       }
 
-      
-
-    }
-    else
-    {
+    } else {
       //current question is not a follow up question
-      //
-      if (this.state.currAnswer === 'Yes' && typeof questionaire[counter].followupQ !=='string')
-      {
+
+      if (this.state.currAnswer === 'Yes' && typeof questionaire[counter].followupQ !=='string') {
         //this current question's answer is yes and current question has follow up questions
-         if(typeof this.state.followupQCnt === 'string')
-        {
+         if(typeof this.state.followupQCnt === 'string') {
           //first time in follow up question
           //set the follow question's counter to 0
           this.setState({
@@ -397,51 +380,73 @@ class App extends Component {
 
            //set up followupQuestion
         setTimeout(()=>this.setFollowupQuestion(counter,0),300);
-
         }
 
 
-      }
-      else{
+      } else{
         //set up next question as normal
-        if(this.state.questionId < questionaire.length)
-        {
+        if(this.state.questionId < questionaire.length) {
           setTimeout(()=>this.setNextQuestion(),300);
-        }
-        else{
+        } else{
           //reach to end of the question, send the answer back and diplay result
           //setTimeout(()=>this.setResults(this.getResults()),300);
           console.log("action: send the input to matching and display results")
         }
-
       }
+    }
+  }
 
-
-
+  handleSubmit() {
+    console.log("SUBMIT");
+    let objectQuery = {
+      zipcode: this.state.answer.zipcode,
+      age: this.state.answer.age,
+      gender: this.state.answer.sex,
+      geneticTesting: this.state.answer.genticTesting,
+      mri: this.state.answer.mri,
+      pet: this.state.answer.pet,
+      spinalTap: this.state.answer.spinalTap,
+      memoryEval: {
+        MMSE: this.state.answer.memoryEval.MMSE,
+        MoCA: this.state.answer.memoryEval.MoCA,
+        CDR: this.state.answer.memoryEval.CDR
+      },
+      prescriptionDuration: this.state.answer.prescriptionDuraiton,
+      medications: this.state.answer.medications,
+      primaryCare: this.state.answer.primaryCare
     }
 
+    console.log("OBJECT QUERY: ", objectQuery);
+
+    axios.post('/query', objectQuery)
+    .then((results) => {
+      console.log("RESULTS.DATA: ", results.data);
+      this.setState({
+        results: results.data,
+        haveResults:true
+      }, console.log("THIS.STATE.haveResults: ", this.state.haveResults))
+    })
+    .catch(error => {
+      console.log("ERROR", error)
+    })
   }
+
 
   //
   //validate the input value before the user can hit 
   //
   //return true when the value is not valid
   //rreturn false when the value is valid
-  validateInputValue(currAnswer)
-  {
+  validateInputValue(currAnswer) {
     const counter = this.state.counter;
 
-    switch(counter)
-    {
+    switch(counter) {
       case 0:
-        if(currAnswer.match(/^[0-9]+$/) )
-        {
+        if(currAnswer.match(/^[0-9]+$/) ) {
           this.setState({
             inputError:false
           })
-        }
-        else
-        {
+        } else {
           this.setState({
             inputError:true
           })
@@ -456,8 +461,7 @@ class App extends Component {
 
   }
 
-  renderQuiz()
-  {
+  renderQuiz() {
     return (
       <Quiz
         currAnswer={this.state.currAnswer}
@@ -475,26 +479,30 @@ class App extends Component {
     );
   }
 
-  renderResult()
-  {
+  renderSubmit() {
     return (
-      <Result quizResult={this.state.result}/>
+
+       <button onClick={this.handleSubmit}>Submit</button>
+      );
+  }
+
+  renderResult() {
+    return (
+      <Result quizResult={this.state.results}/>
     );
   }
 
 
-  render() 
-  {
-
-
-
+  render() {
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">SanaSyn</h1>
         </header>
         
-    {this.state.result ? this.renderResult():this.renderQuiz()}
+    { this.state.haveResults ? this.renderResult() :
+      this.state.answer.primaryCare ? this.renderSubmit() : 
+      this.renderQuiz()}
         
       </div>
     );

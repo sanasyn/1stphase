@@ -1,30 +1,29 @@
 //display the result
 //this will chagne to our result display page
 import React from 'react';
-import PropTypes from 'prop-types';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+// import PropTypes from 'prop-types';
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-function Result(props){
+function Result() {
     return (
-
-        <ReactCSSTransitionGroup
-            className="container result"
-            component="div"
-            transitionName="fade"
-            transitionEnterTimeout={800}
-            transitionLeaveTimeout={500}
-            transitionAppear
-            transitionAppearTimeout={500}
-        >
-            <div className="result">
-                You prefer <strong>{props.quizResult}</strong>!
-            </div>
-        </ReactCSSTransitionGroup>
+        <table>
+            <thead>
+                <tr>
+                    <th>NCT_ID</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {this.props.quizResult.map(study => (
+                    <tr key={study.nct_id}>
+                        <td>{study.nct_id}</td>
+                        <td>{study.official_title}</td>
+                    </tr>
+                    ))}
+            </tbody>
+        </table>
     );
 }
 
-Result.propTypes = {
-    quizResult: PropTypes.string.isRequired,
-};
 
 export default Result;

@@ -77,16 +77,16 @@ function medicationsArray(queryMedications) {
 	const razadyne = ['%galantamine%', '%razadyne%', '%cholinesterase%'];
 	const namenda = ['%memantine%', '%namenda%'];
 
-	if (queryMedications.indexOf('aricept') > -1) {
+	if (queryMedications.indexOf('Aricept') > -1) {
 		buildArray = buildArray.concat(aricept);
 	};
-	if (queryMedications.indexOf('exelon') > -1) {
+	if (queryMedications.indexOf('Exelon') > -1) {
 		buildArray = buildArray.concat(exelon);
 	};
-	if (queryMedications.indexOf('razadyneEr') > -1) {
+	if (queryMedications.indexOf('Razadyne Er') > -1) {
 		buildArray = buildArray.concat(razadyne);
 	};
-	if (queryMedications.indexOf('namenda') > -1) {
+	if (queryMedications.indexOf('Namenda') > -1) {
 		buildArray = buildArray.concat(namenda);
 	};
 
