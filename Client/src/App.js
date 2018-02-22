@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Quiz from './components/Quiz';
 import questionaire from './api/questionaire';
@@ -39,6 +38,7 @@ class App extends Component {
         medications: [],
         primaryCare:"no"
       },
+      inputError:true,
       result:''
     }
 
@@ -48,6 +48,7 @@ class App extends Component {
 
     this.handleTextChange=this.handleTextChange.bind(this);
 
+    this.validateInputValue=this.validateInputValue.bind(this);
 
   }
 
@@ -201,11 +202,17 @@ class App extends Component {
     this.setState({
       currAnswer: answer
     });
+
+    // this.setState({
+    //   inputError:this.validateInputValue(this.state.currAnswer)
+    // })
+    
     
   }
 
   //when next button is clicked, set up the next question to be displayed
- handleClickNext(){
+ handleClickNext()
+  {
    //counter for current question
     const counter = this.state.counter;
     var updateAnswer=this.state.answer;
@@ -337,7 +344,7 @@ class App extends Component {
       break;
 
       default:
-
+          console.log("current counter: ", counter," this current counter is not been handle in the switch statement. Mostly like there is additional questions in the questionaire.js");
         break;
 
     }
@@ -415,7 +422,42 @@ class App extends Component {
 
   }
 
-  renderQuiz(){
+  //
+  //validate the input value before the user can hit 
+  //
+  //return true when the value is not valid
+  //rreturn false when the value is valid
+  validateInputValue(currAnswer)
+  {
+    const counter = this.state.counter;
+
+    switch(counter)
+    {
+      case 0:
+        if(currAnswer.match(/^[0-9]+$/) )
+        {
+          this.setState({
+            inputError:false
+          })
+        }
+        else
+        {
+          this.setState({
+            inputError:true
+          })
+        }
+      break;
+        
+
+      default:
+      break;
+      
+    }
+
+  }
+
+  renderQuiz()
+  {
     return (
       <Quiz
         currAnswer={this.state.currAnswer}
@@ -426,23 +468,30 @@ class App extends Component {
         questionTotal={questionaire.length}
         onAnswerSelected ={this.handleAnswerSelected}
         onClickNext={this.handleClickNext}
-        onTextChange={this.handleTextChange}/>
+        onTextChange={this.handleTextChange}
+        inputError={this.state.inputError}
+        validateInputValue={this.validateInputValue}
+        />
     );
   }
 
-  renderResult(){
+  renderResult()
+  {
     return (
       <Result quizResult={this.state.result}/>
     );
   }
 
 
-  render() {
+  render() 
+  {
+
+
+
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Quiz React Practice</h1>
+          <h1 className="App-title">SanaSyn</h1>
         </header>
         
     {this.state.result ? this.renderResult():this.renderQuiz()}
@@ -450,6 +499,7 @@ class App extends Component {
       </div>
     );
   }
+
 }
 
 export default App;
