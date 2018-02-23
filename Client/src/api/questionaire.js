@@ -12,14 +12,14 @@ const questionaire = [
         followupQ:''
     },
     {
-        question: 'Gender?',
+        question: 'What is your gender?',
         type:'radio',
         options:[ 'Male','Female'],
         followupQ:''
       
     },
     {
-        question: 'Have you done genetic testing?',
+        question: 'Have you had genetic testing?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:[{
@@ -30,13 +30,13 @@ const questionaire = [
         }]
     },
     {
-        question: 'Have you have MRI scan done?',
+        question: 'Have you had an MRI scan done?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:''
     },
     {
-        question: 'Have you have PET scan done?',
+        question: 'Have you had an PET scan done?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:[{
@@ -46,7 +46,7 @@ const questionaire = [
         }]
     },
     {
-        question: 'Have you have spinal tap done?',
+        question: 'Have you had an spinal tap done?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:[{
@@ -71,7 +71,7 @@ const questionaire = [
         options:[ 'Yes','No'],
         followupQ:[
             {
-                question: 'How long have been taking the medication?(in Months)',
+                question: 'How long have been taking the medication? (in months)',
                 type:'text',
                 options:''
             },

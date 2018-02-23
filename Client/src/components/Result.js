@@ -1,30 +1,37 @@
-//display the result
-//this will chagne to our result display page
 import React from 'react';
-import PropTypes from 'prop-types';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
-function Result(props){
+// import PropTypes from 'prop-types';
+// import ReactCSSTableRowansitionGroup from 'react-addons-css-TableRowansition-group';
+
+export default (results, stateCheck) => {
     return (
-
-        <ReactCSSTransitionGroup
-            className="container result"
-            component="div"
-            transitionName="fade"
-            transitionEnterTimeout={800}
-            transitionLeaveTimeout={500}
-            transitionAppear
-            transitionAppearTimeout={500}
-        >
-            <div className="result">
-                You prefer <strong>{props.quizResult}</strong>!
-            </div>
-        </ReactCSSTransitionGroup>
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderColumn>NCT_ID</TableHeaderColumn>
+                    <TableHeaderColumn>Title</TableHeaderColumn>
+                </TableRow>
+            </TableHeader>
+            <TableBody displayRowCheckbox={false}>
+                {results.results.map((study, i) => {
+                    return (
+                        <TableRow key={i}>
+                            <TableRowColumn>{i}</TableRowColumn>
+                            <TableRowColumn>{study.nct_id}</TableRowColumn>
+                            <TableRowColumn>{study.official_title}</TableRowColumn>
+                        </TableRow>
+                    )
+                }
+                )}
+            </TableBody>
+        </Table>
     );
 }
-
-Result.propTypes = {
-    quizResult: PropTypes.string.isRequired,
-};
-
-export default Result;

@@ -7,6 +7,7 @@ import Question from '../components/Question';
 import QuestionCount from '../components/QuestionCount';
 import AnswerInput from '../components/AnswerInput';
 import PropTypes from 'prop-types';
+import FlatButton from 'material-ui/FlatButton';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // import AnswerOption from '../components/AnswerOption'
 
@@ -43,9 +44,7 @@ function Quiz(props){
                 />
                 
 
-                <button onClick={props.onClickNext}>
-                Next
-                </button>
+                <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}} onClick={props.onClickNext}> Next</FlatButton>
                 
             </div>
         </ReactCSSTransitionGroup>

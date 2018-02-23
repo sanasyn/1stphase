@@ -18,10 +18,11 @@ body {
 }
 
 /*quiz */
-/* .quiz
-{
-  margin: 0;
-} */
+ .quiz {
+  margin: 0, auto;
+  text-align: center;
+  padding: 30px;
+} 
  
 .result {
   padding: 1.5rem 2.5rem;

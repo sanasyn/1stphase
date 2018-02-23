@@ -2,6 +2,7 @@
 //gender: Male/Female must be capitalized
 let complete =
 	{
+		"zipcode": "78758",
 		"age": "65",
 		"gender": "Female",
 		"geneticTesting": "apoE4_1",
@@ -14,7 +15,8 @@ let complete =
 			"CDR": 1
 		},
 		"prescriptionDuration": 8,
-		"medications": ["aricept", "exelon", "razadyneEr", "namenda"]
+		"medications": ["Namenda"],
+		"primaryCare": "yes"
 	}
 let basic = 
 	{

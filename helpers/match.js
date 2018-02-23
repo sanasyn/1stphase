@@ -24,7 +24,7 @@ function getConnectionOptions() {
 }
 
 function runQuery(req, res) {
-	// console.log("BODY: ", req.body);
+	console.log("BODY: ", req.body);
 	let query = req.body;
 	return knex.select('nct_id', 'official_title')
 	.from('aact_master')
@@ -39,8 +39,8 @@ function runQuery(req, res) {
 	})
 	.andWhere(function() {
 		this
-		.where('gender', query.gender)
-		.orWhere('gender', 'All')
+		// .where('gender', query.gender)
+		.where('gender', 'All')
 	})
 	.andWhere(knex.raw("criteria_inc like all ( :spinalSearch)", 
 			{spinalSearch: spinalQuery(query.spinalTap)}
@@ -56,6 +56,7 @@ function runQuery(req, res) {
 			))
 	.limit(10)
 	.then(rows => {
+		console.log(rows)
 		res.send(rows)
 	})
 	.catch((error) => {
