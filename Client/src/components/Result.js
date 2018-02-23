@@ -1,29 +1,37 @@
-//display the result
-//this will chagne to our result display page
 import React from 'react';
-// import PropTypes from 'prop-types';
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
-function Result() {
+// import PropTypes from 'prop-types';
+// import ReactCSSTableRowansitionGroup from 'react-addons-css-TableRowansition-group';
+
+export default (results, stateCheck) => {
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>NCT_ID</th>
-                    <th>Title</th>
-                </tr>
-            </thead>
-            <tbody>
-                {this.props.quizResult.map(study => (
-                    <tr key={study.nct_id}>
-                        <td>{study.nct_id}</td>
-                        <td>{study.official_title}</td>
-                    </tr>
-                    ))}
-            </tbody>
-        </table>
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderColumn>NCT_ID</TableHeaderColumn>
+                    <TableHeaderColumn>Title</TableHeaderColumn>
+                </TableRow>
+            </TableHeader>
+            <TableBody displayRowCheckbox={false}>
+                {results.results.map((study, i) => {
+                    return (
+                        <TableRow key={i}>
+                            <TableRowColumn>{i}</TableRowColumn>
+                            <TableRowColumn>{study.nct_id}</TableRowColumn>
+                            <TableRowColumn>{study.official_title}</TableRowColumn>
+                        </TableRow>
+                    )
+                }
+                )}
+            </TableBody>
+        </Table>
     );
 }
-
-
-export default Result;

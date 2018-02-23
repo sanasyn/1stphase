@@ -4,6 +4,8 @@ import Quiz from './components/Quiz';
 import questionaire from './api/questionaire';
 import update from 'react-addons-update';
 import Result from './components/Result';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import FlatButton from 'material-ui/FlatButton';
 import axios from 'axios';
 // import AnswerOption from './components/AnswerOption'
 
@@ -21,7 +23,6 @@ class App extends Component {
       followupQFlag: false,
       followupQCnt:"",
       currAnswer:"",
-      haveResults:false,
       answer:{
         zipcode:"",
         age: "",
@@ -49,6 +50,7 @@ class App extends Component {
     this.handleTextChange=this.handleTextChange.bind(this);
     this.validateInputValue=this.validateInputValue.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
+    this.renderResult=this.renderResult.bind(this);
 
   }
 
@@ -243,12 +245,9 @@ class App extends Component {
       
       case 3:
         //for question 4 genetic testing
-        if(this.state.followupQCnt ===0 && this.state.currAnswer==='Yes')
-        { 
+        if (this.state.followupQCnt ===0 && this.state.currAnswer==='Yes') { 
           updateAnswer = update(this.state.answer,{geneticTesting:{$set:"apoE4_1"}});
-        }
-        else
-        {
+        } else {
           updateAnswer = update(this.state.answer,{geneticTesting:{$set:"no"}});
         }
         this.setState({
@@ -267,12 +266,9 @@ class App extends Component {
       
       case 5:
         //for question 6 PET Scan
-        if(this.state.followupQCnt ===0 && this.state.currAnswer==='Yes')
-        { 
+        if (this.state.followupQCnt ===0 && this.state.currAnswer==='Yes') { 
           updateAnswer = update(this.state.answer,{pet:{$set:"amyloidBeta_1"}});
-        }
-        else
-        {
+        } else {
           updateAnswer = update(this.state.answer,{pet:{$set:"no"}});
         }
         this.setState({
@@ -291,15 +287,12 @@ class App extends Component {
 
       case 7:
         //for question 8 memory testing
-        if(this.state.followupQFlag)
-        {
+        if (this.state.followupQFlag) {
           console.log("currAnswer: "+ this.state.currAnswer);
           //in followup question
           updateAnswer = update(this.state.answer,{memoryEval: {$merge:this.state.currAnswer}});
-          console.log("updateAnswer: ", updateAnswer);
-          
-        }
-        else{
+          console.log("updateAnswer: ", updateAnswer);  
+        } else {
           //in regular question
           updateAnswer = update(this.state.answer,{memoryEval: {taken:{$set:true}}});
 
@@ -311,16 +304,11 @@ class App extends Component {
 
       case 8:
         //for question 9 medication 
-        if(this.state.followupQCnt === 0)
-        { 
-          
+        if (this.state.followupQCnt === 0) {  
           updateAnswer = update(this.state.answer,{prescriptionDuration:{$set:this.state.currAnswer}});
         }
-        
-        if(this.state.followupQCnt ===1)
-        { 
+         else if (this.state.followupQCnt ===1) { 
           updateAnswer = update(this.state.answer,{medications:{$push:this.state.currAnswer}});
-          
         }
 
         this.setState({
@@ -343,9 +331,7 @@ class App extends Component {
 
     }
 
-    //
     //below is the flow to set up the next question to display
-    //
     //check if the current question a follow up question
     if (this.state.followupQFlag) {
       //current question is a follow up question
@@ -383,7 +369,7 @@ class App extends Component {
         }
 
 
-      } else{
+      } else {
         //set up next question as normal
         if(this.state.questionId < questionaire.length) {
           setTimeout(()=>this.setNextQuestion(),300);
@@ -420,11 +406,9 @@ class App extends Component {
 
     axios.post('/query', objectQuery)
     .then((results) => {
-      console.log("RESULTS.DATA: ", results.data);
       this.setState({
-        results: results.data,
-        haveResults:true
-      }, console.log("THIS.STATE.haveResults: ", this.state.haveResults))
+        results: results.data
+      })
     })
     .catch(error => {
       console.log("ERROR", error)
@@ -436,7 +420,7 @@ class App extends Component {
   //validate the input value before the user can hit 
   //
   //return true when the value is not valid
-  //rreturn false when the value is valid
+  //return false when the value is valid
   validateInputValue(currAnswer) {
     const counter = this.state.counter;
 
@@ -452,7 +436,6 @@ class App extends Component {
           })
         }
       break;
-        
 
       default:
       break;
@@ -481,29 +464,32 @@ class App extends Component {
 
   renderSubmit() {
     return (
-
-       <button onClick={this.handleSubmit}>Submit</button>
+        <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}}  onClick={this.handleSubmit}>Submit</FlatButton>
       );
   }
 
+
+
   renderResult() {
     return (
-      <Result quizResult={this.state.results}/>
+      <Result results={this.state.results}
+      />
     );
   }
 
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">SanaSyn</h1>
+      <div>
+      <MuiThemeProvider>
+        <header style={{marginTop: "0", backgroundColor: "#6ab6c5"}}>
+          <h1 style={{marginTop: "0", padding: "10px", color: "#eeeeee", fontWeight:"bold"}}>SanaSyn</h1>
         </header>
         
-    { this.state.haveResults ? this.renderResult() :
+    { this.state.results.length? this.renderResult() :
       this.state.answer.primaryCare ? this.renderSubmit() : 
       this.renderQuiz()}
-        
+        </MuiThemeProvider>
       </div>
     );
   }
