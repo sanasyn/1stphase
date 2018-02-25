@@ -2,35 +2,39 @@ const query = require('./exampleObjects').complete;
 
 // searches for MRI if set to yes in query object
 function mriSearch(mri) {
-	let queryMri = '';
+	let queryMri = '%';
 	if (mri === 'yes') {
 		queryMri = '%MRI%';
 	}
-	// console.log("MRI: ", queryMri);
+	console.log("MRI: ", queryMri);
 	return queryMri;
 }
 
 // creates query for genetic testing
 function geneticQuery(genetic) {
 	let geneticArray = [];
-	if (pet === 'apoE4_0') {
-		petArray = ['%genetic%']
+	if (genetic === 'apoE4_0') {
+		geneticArray = ['%genetic%']
+	} else if (genetic === 'apoE4_1') {
+		geneticArray = ['%genetic%', '%ApoE4%']
+	} else {
+		geneticArray = ['%'];
 	}
-	if (pet === 'apoE4_1') {
-		petArray = ['%genetic%', '%ApoE4%']
-	}
-	return petArray;
+	console.log("GENETIC ARRAY: ", geneticArray)
+	return geneticArray;
 }
 
 // creates query for PET scans looking for either MRI or MRI and amyloid
 function petQuery(pet) {
 	let petArray = [];
 	if (pet === 'amyloidBeta_0') {
-		petArray = ['%MRI%']
+		petArray = ['%PET%']
+	} else if (pet === 'amyloidBeta_1') {
+		petArray = ['%PET%', '%amyloid%']
+	} else {
+		petArray = ['%'];
 	}
-	if (pet === 'amyloidBeta_1') {
-		petArray = ['%MRI%', '%amyloid%']
-	}
+	console.log("PET: ", petArray);
 	return petArray;
 }
 
@@ -38,15 +42,18 @@ function petQuery(pet) {
 function spinalQuery(spinal) {
 	let spinalArray = [];
 	if (spinal === 'both') {
-		spinalArray = ['%spinal%', '%p-tau%']
-	}
+		spinalArray = ['%spinal%', '%p-tau%', '%amyloid%']
+	} 
 	if (spinal === 'pTau') {
-		spinalArray = ['%spinal%']
-	}
+		spinalArray = ['%spinal%', '%p-tau%']
+	} 
 	if (spinal === 'amyloidBeta') {
-		spinalArray = ['%spinal%']
+		spinalArray = ['%spinal%', '%amyloid%']
 	}
-	// console.log("SPINAL ARRAY: ", spinalArray);
+	if (spinalArray.length === 0) {
+		spinalArray = ['%']
+	}
+	console.log("SPINAL ARRAY: ", spinalArray);
 	return spinalArray;
 }
 
@@ -54,16 +61,19 @@ function spinalQuery(spinal) {
 function memoryEvalArray(queryEval) {
 	let queryMemArray = [];
 	if (queryEval.MMSE !== 'no') {
-		queryMemArray.push('%MMSE%')
+		queryMemArray.push('%MMSE%','%mini-mental%')
 	}
 	if (queryEval.MoCA !== 'no') {
-		queryMemArray.push('%MOCA%')
+		queryMemArray.push('%MOCA%', '%montreal%')
 	}
 	if (queryEval.CDR !== 'no') {
-		queryMemArray.push('%CDR%')
+		queryMemArray.push('%CDR%', '%clinical dementia rating%')
 	}
 
-	// console.log("MEMORY ARRAY: ", queryMemArray);
+	if (queryMemArray.length === 0) {
+		queryMemArray = ['%']
+	}
+	console.log("MEMORY ARRAY: ", queryMemArray);
 	return queryMemArray;
 
 }
@@ -96,7 +106,12 @@ function medicationsArray(queryMedications) {
 			queryArray.push(element);
 		}
 	})
-	// console.log("QUERY ARRAY: ", queryArray);
+
+	if (queryArray.length === 0) {
+		queryArray = ['%']
+	}
+	console.log("MEDICATIONS: ", queryArray);
+
 	return queryArray;
 }
 
@@ -108,5 +123,5 @@ module.exports = {
 	spinalQuery: spinalQuery,
 	memoryEvalArray: memoryEvalArray,
 	medicationsArray: medicationsArray,
-	
+	geneticQuery: geneticQuery,
 }

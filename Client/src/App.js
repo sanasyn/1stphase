@@ -47,6 +47,7 @@ class App extends Component {
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
     this.handleClickNext=this.handleClickNext.bind(this);
+    this.handleClickBack=this.handleClickBack.bind(this);
     this.handleTextChange=this.handleTextChange.bind(this);
     this.validateInputValue=this.validateInputValue.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
@@ -208,6 +209,12 @@ class App extends Component {
      
   }
 
+handleClickBack() {
+  const counter = this.state.counter-2;
+  this.setState({
+    counter: counter
+  }, this.handleClickNext)
+}
   //when next button is clicked, set up the next question to be displayed
  handleClickNext() {
    //counter for current question
@@ -455,6 +462,7 @@ class App extends Component {
         questionTotal={questionaire.length}
         onAnswerSelected ={this.handleAnswerSelected}
         onClickNext={this.handleClickNext}
+        onClickBack={this.handleClickBack}
         onTextChange={this.handleTextChange}
         inputError={this.state.inputError}
         validateInputValue={this.validateInputValue}

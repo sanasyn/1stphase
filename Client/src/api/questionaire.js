@@ -36,7 +36,7 @@ const questionaire = [
         followupQ:''
     },
     {
-        question: 'Have you had an PET scan done?',
+        question: 'Have you had a PET scan done?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:[{

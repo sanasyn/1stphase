@@ -26,7 +26,7 @@ function getConnectionOptions() {
 function runQuery(req, res) {
 	console.log("BODY: ", req.body);
 	let query = req.body;
-	return knex.select('nct_id', 'official_title')
+	return knex.select('nct_id','official_title')
 	.from('aact_master')
 	.where(function() {
 		this
@@ -39,19 +39,25 @@ function runQuery(req, res) {
 	})
 	.andWhere(function() {
 		this
-		// .where('gender', query.gender)
-		.where('gender', 'All')
+		.where('gender', query.gender)
+		.orWhere('gender', 'All')
 	})
-	.andWhere(knex.raw("criteria_inc like all ( :spinalSearch)", 
+	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
+			{arraySearch: memoryEvalArray(query.memoryEval)}
+			))
+	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
+			{arraySearch: geneticQuery(query.geneticTesting)}
+			))
+	.andWhere(knex.raw("criteria_inc ilike any ( :spinalSearch)", 
 			{spinalSearch: spinalQuery(query.spinalTap)}
 			))
-	.andWhere(knex.raw("criteria_inc like ( :mriSearch)", 
+	.andWhere(knex.raw("criteria_inc ilike ( :mriSearch)", 
 			{mriSearch: mriSearch(query.mri)}
 			))
-	.andWhere(knex.raw("criteria_inc like all ( :arraySearch)", 
+	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
 			{arraySearch: petQuery(query.pet)}
 			))
-	.andWhere(knex.raw("criteria_inc like any ( :arraySearch)", 
+	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
 			{arraySearch: medicationsArray(query.medications)}
 			))
 	.limit(10)

@@ -32,7 +32,7 @@ let basic =
 			"CDR": "no"
 		},
 		"prescriptionDuration": 8,
-		"medications": ["namenda"]
+		"medications": []
 	}
 
 module.exports = {
