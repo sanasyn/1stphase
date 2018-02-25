@@ -44,7 +44,10 @@ function Quiz(props){
                 />
                 
 
-                <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}} onClick={props.onClickNext}> Next</FlatButton>
+                <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px", margin:"10px"}} onClick={props.onClickBack}> Back</FlatButton>
+
+                <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px", margin:"10px"}} onClick={props.onClickNext}> Next</FlatButton>
+
                 
             </div>
         </ReactCSSTransitionGroup>
