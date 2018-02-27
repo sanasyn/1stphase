@@ -14,9 +14,9 @@ function mriSearch(mri) {
 function geneticQuery(genetic) {
 	let geneticArray = [];
 	if (genetic === 'apoE4_0') {
-		geneticArray = ['%genetic%']
+		geneticArray = ['%']
 	} else if (genetic === 'apoE4_1') {
-		geneticArray = ['%genetic%', '%ApoE4%']
+		geneticArray = ['%']
 	} else {
 		geneticArray = ['%'];
 	}
