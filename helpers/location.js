@@ -13,6 +13,9 @@ const getFacilityDistance = (zip, facilities) => {
             console.log(res.data)
             console.log(res.data.rows[0].elements)
         })
+        .then(() => {
+            console.log(facilities)
+        })
 }
 
 function getZip(facilities){

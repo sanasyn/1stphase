@@ -28,7 +28,7 @@ function getConnectionOptions() {
 function runQuery(req, res) {
 	// console.log("BODY: ", req.body);
 	// let query = req.body;
-	return knex.select('nct_id','official_title','city','state','zip')
+	return knex.select('nct_id','official_title','facility_id','city','state','zip')
 	.from('aact_master')
 	.where(function() {
 		this
