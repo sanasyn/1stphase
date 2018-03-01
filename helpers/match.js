@@ -8,7 +8,7 @@ const spinalQuery = require('./translate').spinalQuery;
 const mriSearch = require('./translate').mriSearch;
 const memoryEvalArray = require('./translate').memoryEvalArray;
 const medicationsArray = require('./translate').medicationsArray;
-const query = require('./exampleObjects').complete;
+// const query = require('./exampleObjects').complete;
 
 const getFacilityDistance = require('./location');
 
@@ -26,8 +26,8 @@ function getConnectionOptions() {
 }
 
 function runQuery(req, res) {
-	// console.log("BODY: ", req.body);
-	// let query = req.body;
+	console.log("BODY: ", req.body);
+	let query = req.body;
 	return knex.select('nct_id','official_title','facility_id','city','state','zip')
 	.from('aact_master')
 	.where(function() {
@@ -62,17 +62,23 @@ function runQuery(req, res) {
 	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
 			{arraySearch: medicationsArray(query.medications)}
 			))
-	// .limit(10)
+	.limit(10)
 	.then(rows => {
-		getFacilityDistance(query.zipcode, rows)
-		// res.send(rows)
+		return getFacilityDistance(query.zipcode, rows)
+			.then((results) => {
+				return results.sort((a,b) => a.distance - b.distance)
+			})
 	})
-	// .catch((error) => {
-	// 	res.send(new Error('Error querying database. ', error));
-	// });
+	.then((rows) => {
+		console.log(rows)
+		res.send(rows)
+	})
+	.catch((error) => {
+		res.send(new Error('Error querying database. ', error));
+	});
 }
 
-runQuery();
-// module.exports = {
-// 	runQuery: runQuery,
-// }
+// runQuery();
+module.exports = {
+	runQuery: runQuery,
+}
