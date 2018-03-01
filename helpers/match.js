@@ -10,6 +10,8 @@ const memoryEvalArray = require('./translate').memoryEvalArray;
 const medicationsArray = require('./translate').medicationsArray;
 // const query = require('./exampleObjects').complete;
 
+const getFacilityDistance = require('./location');
+
 function getConnectionOptions() {
 	return {
 		client: config.client,
@@ -26,7 +28,7 @@ function getConnectionOptions() {
 function runQuery(req, res) {
 	console.log("BODY: ", req.body);
 	let query = req.body;
-	return knex.select('nct_id','official_title')
+	return knex.select('nct_id','official_title','facility_id','city','state','zip')
 	.from('aact_master')
 	.where(function() {
 		this
@@ -62,6 +64,12 @@ function runQuery(req, res) {
 			))
 	.limit(10)
 	.then(rows => {
+		return getFacilityDistance(query.zipcode, rows)
+			.then((results) => {
+				return results.sort((a,b) => a.distance - b.distance)
+			})
+	})
+	.then((rows) => {
 		console.log(rows)
 		res.send(rows)
 	})
