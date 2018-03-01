@@ -1,85 +1,64 @@
 const query = require('./exampleObjects').complete;
 
-// searches for MRI if set to yes in query object
-function mriSearch(mri) {
-	let queryMri = '%';
-	if (mri === 'yes') {
-		queryMri = '%MRI%';
+// creates genetic testing query for inclusion criteria
+function geneticQueryInc(genetic) {
+	let queryGenetic = '%';
+	if (genetic.taken === 'apoE4_1') {
+		queryGenetic = '%APOE4%'
+	}
+	console.log("GENETIC INC: ", queryGenetic)
+	return queryGenetic;
+}
+
+// creates genetic testing query for exclusion criteria
+function geneticQueryEx(genetic) {
+	let queryGenetic = ['%'];
+	if (genetic.consent === 'no') {
+		queryGenetic = ['%APOE4%','%genetic%'];
+	}
+	console.log("GENETIC Ex: ", queryGenetic)
+	return queryGenetic;
+}
+
+// creates mri query for exclusion criteria
+function mriQuery(mri) {
+	let queryMri = '%Marissa%';
+	if (mri === 'no') {
+		queryMri = '%contraindications for MR%';
 	}
 	console.log("MRI: ", queryMri);
 	return queryMri;
 }
 
-// creates query for genetic testing
-function geneticQuery(genetic) {
-	let geneticArray = [];
-	if (genetic === 'apoE4_0') {
-		geneticArray = ['%']
-	} else if (genetic === 'apoE4_1') {
-		geneticArray = ['%']
-	} else {
-		geneticArray = ['%'];
-	}
-	console.log("GENETIC ARRAY: ", geneticArray)
-	return geneticArray;
-}
-
-// creates query for PET scans looking for either MRI or MRI and amyloid
+// creates PET scan query for exclusion criteria
 function petQuery(pet) {
-	let petArray = [];
-	if (pet === 'amyloidBeta_0') {
-		petArray = ['%PET%']
-	} else if (pet === 'amyloidBeta_1') {
-		petArray = ['%PET%', '%amyloid%']
-	} else {
-		petArray = ['%'];
+	let petArray = ['%'];
+	if (pet === 'no') {
+		petArray = ['%PET%', "%florbetapir%", "%F-AV-1451%"]
 	}
 	console.log("PET: ", petArray);
 	return petArray;
 }
 
-// creates query for PET scans looking for either MRI or MRI and amyloid. removed %amyloid% because it returned nothing when searching along with spinal
+// creates spinal tap query for exclusion criteria
 function spinalQuery(spinal) {
-	let spinalArray = [];
-	if (spinal === 'both') {
-		spinalArray = ['%spinal%', '%p-tau%', '%amyloid%']
+	let spinalArray = ['%'];
+	if (spinal === 'no') {
+		spinalArray = ['%spinal%', '%LP%', '%lumbar%', "%CSF%", "%cerebrospinal%"]
 	} 
-	if (spinal === 'pTau') {
-		spinalArray = ['%spinal%', '%p-tau%']
-	} 
-	if (spinal === 'amyloidBeta') {
-		spinalArray = ['%spinal%', '%amyloid%']
-	}
-	if (spinalArray.length === 0) {
-		spinalArray = ['%']
-	}
 	console.log("SPINAL ARRAY: ", spinalArray);
 	return spinalArray;
 }
 
-// Builds query array for memory evaluations. We do not care about
-function memoryEvalArray(queryEval) {
-	let queryMemArray = [];
-	if (queryEval.MMSE !== 'no') {
-		queryMemArray.push('%MMSE%','%mini-mental%')
+function strokeQuery(stroke) {
+	let strokeArray = ['%'];
+	if (stroke === 'yes') {
+		strokeArray = ['%stroke%', '%vascular%', '%ischemic%']
 	}
-	if (queryEval.MoCA !== 'no') {
-		queryMemArray.push('%MOCA%', '%montreal%')
-	}
-	if (queryEval.CDR !== 'no') {
-		queryMemArray.push('%CDR%', '%clinical dementia rating%')
-	}
-
-	if (queryMemArray.length === 0) {
-		queryMemArray = ['%']
-	}
-	console.log("MEMORY ARRAY: ", queryMemArray);
-	return queryMemArray;
-
 }
 
-// builds array used to query for medications. One medication may have multiple names, and so all should be included in the query. The '%' is used to search for the word in any part of the field
-function medicationsArray(queryMedications) {
+// builds array used to query for medications inclusion
+function medicationsQuery(medications) {
 	let buildArray = [];
 	let queryArray = [];
 	const aricept = ['%donepezil%', '%aricept%', '%cholinesterase%'];
@@ -87,18 +66,20 @@ function medicationsArray(queryMedications) {
 	const razadyne = ['%galantamine%', '%razadyne%', '%cholinesterase%'];
 	const namenda = ['%memantine%', '%namenda%'];
 
-	if (queryMedications.indexOf('Aricept') > -1) {
-		buildArray = buildArray.concat(aricept);
-	};
-	if (queryMedications.indexOf('Exelon') > -1) {
-		buildArray = buildArray.concat(exelon);
-	};
-	if (queryMedications.indexOf('Razadyne Er') > -1) {
-		buildArray = buildArray.concat(razadyne);
-	};
-	if (queryMedications.indexOf('Namenda') > -1) {
-		buildArray = buildArray.concat(namenda);
-	};
+	if (medications.acceptableTime === 'yes'){
+		if (medications.list.indexOf('Aricept') > -1) {
+			buildArray = buildArray.concat(aricept);
+		};
+		if (medications.list.indexOf('Exelon') > -1) {
+			buildArray = buildArray.concat(exelon);
+		};
+		if (medications.list.indexOf('Razadyne Er') > -1) {
+			buildArray = buildArray.concat(razadyne);
+		};
+		if (medications.list.indexOf('Namenda') > -1) {
+			buildArray = buildArray.concat(namenda);
+		};
+	}
 
 	//removes duplicates
 	buildArray.forEach(element => {
@@ -116,12 +97,53 @@ function medicationsArray(queryMedications) {
 }
 
 
+// builds array used to query for medications inclusion
+function medicationsQueryNot(medications) {
+	let buildArray = [];
+	let queryArray = [];
+	const aricept = ['%donepezil%', '%aricept%', '%cholinesterase%'];
+	const exelon = ['%rivastigmine%', '%exelon%', '%cholinesterase%'];
+	const razadyne = ['%galantamine%', '%razadyne%', '%cholinesterase%'];
+	const namenda = ['%memantine%', '%namenda%'];
+
+	if (medications.acceptableTime === 'no'){
+		if (medications.list.indexOf('Aricept') > -1) {
+			buildArray = buildArray.concat(aricept);
+		};
+		if (medications.list.indexOf('Exelon') > -1) {
+			buildArray = buildArray.concat(exelon);
+		};
+		if (medications.list.indexOf('Razadyne Er') > -1) {
+			buildArray = buildArray.concat(razadyne);
+		};
+		if (medications.list.indexOf('Namenda') > -1) {
+			buildArray = buildArray.concat(namenda);
+		};
+	}
+
+	//removes duplicates
+	buildArray.forEach(element => {
+		if (queryArray.indexOf(element) === -1) {
+			queryArray.push(element);
+		}
+	})
+
+	if (queryArray.length === 0) {
+		queryArray = ['%']
+	}
+	console.log("MEDICATIONS: ", queryArray);
+
+	return queryArray;
+}
+
 
 module.exports = {
-	mriSearch: mriSearch,
+	geneticQueryInc: geneticQueryInc,
+	geneticQueryEx: geneticQueryEx,
+	mriQuery: mriQuery,
 	petQuery: petQuery,
 	spinalQuery: spinalQuery,
-	memoryEvalArray: memoryEvalArray,
-	medicationsArray: medicationsArray,
-	geneticQuery: geneticQuery,
+	strokeQuery: strokeQuery,
+	medicationsQuery: medicationsQuery,
+	medicationsQueryNot: medicationsQueryNot,
 }

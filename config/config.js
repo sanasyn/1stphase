@@ -20,5 +20,13 @@ module.exports = {
 		host : process.env.HOST || 'localhost',
 		database : process.env.DATABASE || '',
 		password : process.env.PASSWORD || '',	
-	}
+	},
+	heroku: {
+        port : process.env.NODE_ENV || 5432,
+        client : process.env.CLIENT || 'pg',
+        user : process.env.DB_USER || 'udvarwydbwewdx',
+        host : process.env.HOST || 'ec2-54-83-11-247.compute-1.amazonaws.com',
+        database : process.env.DATABASE || 'd4kltvr29jig9h',
+        password : process.env.PASSWORD || '820cc5f1693678e34b525f8157dedfecbe65d63d97af95f905b30f449e302108',  
+    }
 }
