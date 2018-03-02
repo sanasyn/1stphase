@@ -30,7 +30,7 @@ function getConnectionOptions() {
 function runQuery(req, res) {
 	console.log("BODY: ", req.body);
 	let query = req.body;
-	return knex.select('nct_id')
+	return knex.select('nct_id','official_title','facility_id','city','state','zip')
 	.from('aact_master')
 	// .where(function() {
 	// 	this
@@ -53,9 +53,9 @@ function runQuery(req, res) {
 	// 		{search: geneticQueryEx(query.geneticTesting.taken)}
 	// 		))
 	// this does not return results when mri is no
-	// .andWhereNot(knex.raw("criteria_ex ilike ( :mriSearch)", 
-	// 		{mriSearch: mriQuery(query.mri)}
-	// 		))
+	.andWhere(knex.raw("criteria_ex ILIKE :mriSearch", 
+			{mriSearch: mriQuery(query.mri)}
+			))
 	// .andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)",
 	// 		{arraySearch: petQuery(query.pet)}
 	// 		))
@@ -69,7 +69,7 @@ function runQuery(req, res) {
 	// .andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
 	// 		{arraySearch: medicationsArray(query.medications)}
 	// 		))
-	// .limit(10)
+	.limit(10)
 	.then(rows => {
 		return getFacilityDistance(query.zipcode, rows)
 			.then((results) => {
