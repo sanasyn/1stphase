@@ -12,9 +12,9 @@ function geneticQueryInc(genetic) {
 
 // creates genetic testing query for exclusion criteria
 function geneticQueryEx(genetic) {
-	let queryGenetic = ['%'];
+	let queryGenetic = [''];
 	if (genetic.consent === 'no') {
-		queryGenetic = ['%APOE4%','%genetic%'];
+		queryGenetic = ['%APOE%','%genetic%testing%','%refus%APOE%'];
 	}
 	console.log("GENETIC Ex: ", queryGenetic)
 	return queryGenetic;
@@ -22,9 +22,9 @@ function geneticQueryEx(genetic) {
 
 // creates mri query for exclusion criteria
 function mriQuery(mri) {
-	let queryMri = '%Marissa%';
+	let queryMri = '';
 	if (mri === 'no') {
-		queryMri = '%contraindications for MR%';
+		queryMri = '%contraindication%MR%';
 	}
 	console.log("MRI: ", queryMri);
 	return queryMri;
@@ -32,9 +32,9 @@ function mriQuery(mri) {
 
 // creates PET scan query for exclusion criteria
 function petQuery(pet) {
-	let petArray = ['%'];
+	let petArray = [''];
 	if (pet === 'no') {
-		petArray = ['%PET%', "%florbetapir%", "%F-AV-1451%"]
+		petArray = ['%contraindication%PET%', "%florbetapir%", "%F-AV-1451%"]
 	}
 	console.log("PET: ", petArray);
 	return petArray;
@@ -42,19 +42,21 @@ function petQuery(pet) {
 
 // creates spinal tap query for exclusion criteria
 function spinalQuery(spinal) {
-	let spinalArray = ['%'];
+	let spinalArray = [''];
 	if (spinal === 'no') {
-		spinalArray = ['%spinal%', '%LP%', '%lumbar%', "%CSF%", "%cerebrospinal%"]
+		spinalArray = ['%contraindication%lumbar%']
 	} 
 	console.log("SPINAL ARRAY: ", spinalArray);
 	return spinalArray;
 }
 
 function strokeQuery(stroke) {
-	let strokeArray = ['%'];
+	let strokeArray = [''];
 	if (stroke === 'yes') {
 		strokeArray = ['%stroke%', '%vascular%', '%ischemic%']
 	}
+	console.log("STROKE ARRAY: ", strokeArray);
+	return strokeArray;
 }
 
 // builds array used to query for medications inclusion
@@ -136,6 +138,15 @@ function medicationsQueryNot(medications) {
 	return queryArray;
 }
 
+// creates caregiver query for inclusion criteria
+function caregiverQueryInc(care) {
+	let queryCare = [''];
+	if (care === 'no') {
+		queryCare = ['%caregiver%','%partner%'];
+	}
+	console.log("CARE INC: ", queryCare)
+	return queryCare;
+}
 
 module.exports = {
 	geneticQueryInc: geneticQueryInc,
@@ -146,4 +157,5 @@ module.exports = {
 	strokeQuery: strokeQuery,
 	medicationsQuery: medicationsQuery,
 	medicationsQueryNot: medicationsQueryNot,
+	caregiverQueryInc: caregiverQueryInc
 }
