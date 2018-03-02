@@ -68,7 +68,7 @@ function runQuery(req, res) {
 		// 	.then((results) => {
 		// 		return results.sort((a,b) => a.distance - b.distance)
 		// 	})
-		return rows;
+		res.send(rows)
 	})
 	// .then((rows) => {
 	// 	console.log(rows)

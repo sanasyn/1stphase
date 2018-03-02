@@ -7,6 +7,7 @@ import Result from './components/Result';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FlatButton from 'material-ui/FlatButton';
 import axios from 'axios';
+import locationHelper from './utils/location';
 // import AnswerOption from './components/AnswerOption'
 
 class App extends Component {
@@ -416,7 +417,8 @@ handleClickBack() {
       // this.setState({
       //   results: results.data
       // })
-      
+      locationHelper.getFacilityDistance(objectQuery.zipcode, results.data)
+      .then((results) => console.log(results))
     })
     .catch(error => {
       console.log("ERROR", error)
@@ -481,7 +483,7 @@ handleClickBack() {
 
   renderResult() {
     return (
-      <Result results={this.state.results}
+      <Result zipcode={this.state.answer.zipcode} results={this.state.results}
       />
     );
   }
