@@ -419,6 +419,11 @@ handleClickBack() {
       // })
       locationHelper.getFacilityDistance(objectQuery.zipcode, results.data)
       .then((results) => console.log(results))
+      // .then((modifiedResults) => 
+      //     this.setState({
+      //     results: modifiedResults
+      //   })
+      // )
     })
     .catch(error => {
       console.log("ERROR", error)
@@ -483,7 +488,7 @@ handleClickBack() {
 
   renderResult() {
     return (
-      <Result zipcode={this.state.answer.zipcode} results={this.state.results}
+      <Result results={this.state.results}
       />
     );
   }
