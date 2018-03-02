@@ -64,15 +64,16 @@ function runQuery(req, res) {
 			))
 	.limit(10)
 	.then(rows => {
-		return getFacilityDistance(query.zipcode, rows)
-			.then((results) => {
-				return results.sort((a,b) => a.distance - b.distance)
-			})
+		// return getFacilityDistance(query.zipcode, rows)
+		// 	.then((results) => {
+		// 		return results.sort((a,b) => a.distance - b.distance)
+		// 	})
+		return rows;
 	})
-	.then((rows) => {
-		console.log(rows)
-		res.send(rows)
-	})
+	// .then((rows) => {
+	// 	console.log(rows)
+	// 	res.send(rows)
+	// })
 	.catch((error) => {
 		res.send(new Error('Error querying database. ', error));
 	});

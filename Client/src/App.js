@@ -413,9 +413,10 @@ handleClickBack() {
 
     axios.post('/query', objectQuery)
     .then((results) => {
-      this.setState({
-        results: results.data
-      })
+      // this.setState({
+      //   results: results.data
+      // })
+      
     })
     .catch(error => {
       console.log("ERROR", error)
