@@ -5,37 +5,22 @@ let complete =
 		"zipcode": "78758",
 		"age": "65",
 		"gender": "Female",
-		"geneticTesting": "apoE4_1",
+		"geneticTesting": {
+			"taken": "no",  //could also be apoE4_0 or apoE4_1
+			"consent": "yes" // mark as yes if already taken
+		},
 		"mri": "yes",
-		"pet": "amyloidBeta_0",
+		"pet": "yes",
 		"spinalTap": "no",
-		"memoryEval": {
-			"MMSE": 25,
-			"MoCA": 25,
-			"CDR": 1
+		"stroke": "yes", 
+		"medications": {
+			"list": ["Namenda"],
+			"acceptableTime": "yes" //default to 0
 		},
-		"prescriptionDuration": 8,
-		"medications": ["Namenda"],
-		"primaryCare": "yes"
+		"informant": "yes",
+		"primaryCare": "yes",
+		"opinion": ["Familiy history of Alzheimer's disease", "Interested in clinical research", "Memory Compaints", "Other text"]
 	}
-let basic = 
-	{
-		"age": "70",
-		"gender": "Male",
-		"geneticTesting": "no",
-		"mri": "no",
-		"pet": "no",
-		"spinalTap": "no",
-		"memoryEval": {
-			"MMSE": "no",
-			"MoCA": "no",
-			"CDR": "no"
-		},
-		"prescriptionDuration": 8,
-		"medications": []
-	}
-
 module.exports = {
-	complete: complete,
-	basic: basic
+	complete: complete
 }

@@ -2,12 +2,15 @@ const config = require('../config/config').heroku;
 const pg = require('pg');
 const knex = require('knex')(getConnectionOptions());
 
-const geneticQuery = require('./translate').geneticQuery;
+const geneticQueryInc = require('./translate').geneticQueryInc;
+const geneticQueryEx = require('./translate').geneticQueryEx;
+const mriQuery = require('./translate').mriQuery;
 const petQuery = require('./translate').petQuery;
 const spinalQuery = require('./translate').spinalQuery;
-const mriSearch = require('./translate').mriSearch;
-const memoryEvalArray = require('./translate').memoryEvalArray;
-const medicationsArray = require('./translate').medicationsArray;
+const strokeQuery = require('./translate').strokeQuery;
+const medicationsQuery = require('./translate').medicationsQuery;
+const medicationsQueryNot = require('./translate').medicationsQueryNot;
+const caregiverQueryInc = require('./translate').caregiverQueryInc;
 // const query = require('./exampleObjects').complete;
 
 const getFacilityDistance = require('./location');
@@ -44,31 +47,41 @@ function runQuery(req, res) {
 		.where('gender', query.gender)
 		.orWhere('gender', 'All')
 	})
-	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
-			{arraySearch: memoryEvalArray(query.memoryEval)}
+	//GOOD
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :search)", 
+			{search: geneticQueryEx(query.geneticTesting)}
 			))
-	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
-			{arraySearch: geneticQuery(query.geneticTesting)}
+	// GOOD
+	.andWhere(knex.raw("criteria_ex NOT ILIKE :mriSearch", 
+			{mriSearch: mriQuery(query.mri)}
 			))
-	.andWhere(knex.raw("criteria_inc ilike any ( :spinalSearch)", 
-			{spinalSearch: spinalQuery(query.spinalTap)}
-			))
-	.andWhere(knex.raw("criteria_inc ilike ( :mriSearch)", 
-			{mriSearch: mriSearch(query.mri)}
-			))
-	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
+	//GOOD
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :arraySearch)",
 			{arraySearch: petQuery(query.pet)}
 			))
+	//GOOD
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :spinalSearch)", 
+			{spinalSearch: spinalQuery(query.spinalTap)}
+			))
+	//GOOD
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :strokeSearch)", 
+			{strokeSearch: strokeQuery(query.stroke)}
+			))
+	//GOOD
 	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
-			{arraySearch: medicationsArray(query.medications)}
+			{arraySearch: medicationsQuery(query.medications)}
+			))
+	//GOOD
+	.andWhere(knex.raw("criteria_inc NOT ILIKE any ( :careSearch)", 
+			{careSearch: caregiverQueryInc(query.stroke)}
 			))
 	.limit(10)
-	.then(rows => {
-		return getFacilityDistance(query.zipcode, rows)
-			.then((results) => {
-				return results.sort((a,b) => a.distance - b.distance)
-			})
-	})
+	// .then(rows => {
+	// 	return getFacilityDistance(query.zipcode, rows)
+	// 		.then((results) => {
+	// 			return results.sort((a,b) => a.distance - b.distance)
+	// 		})
+	// })
 	.then((rows) => {
 		console.log(rows)
 		res.send(rows)
