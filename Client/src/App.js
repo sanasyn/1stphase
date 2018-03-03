@@ -27,19 +27,21 @@ class App extends Component {
         zipcode:"",
         age: "",
         sex: "",
-        geneticTesting: "",
-        mri: "",
-        pet: "no",
-        spinalTap: "",
-        memoryEval: {
-          taken: false,
-          MMSE: "no",
-          MoCA: "no",
-          CDR: "no"
-        },
-        prescriptionDuration: 0,
-        medications: [],
-        primaryCare:"",
+        geneticTesting: {
+          taken: "no",  //could also be apoE4_0 or apoE4_1
+          consent: "yes" // mark as yes if already taken
+      },
+      stroke: "", 
+      medications: {
+          list: [],
+          acceptableTime:"" //default to 0
+      },
+      informant: "",
+      primaryCare: "",
+      opinion: {
+        list:[],
+        otherText:""
+      }
       },
       inputError:true,
       results:[]
@@ -96,6 +98,7 @@ class App extends Component {
   }
 
   setFollowupQuestion(counter,followupQCnt) {
+    
     //display follow questions
     this.setState({
       counter: counter,
@@ -114,27 +117,8 @@ class App extends Component {
     //this.setUserAnswer(answer);
     var answer=this.state.currAnswer;
     
-    
-      if(this.state.counter === 6 && this.state.followupQCnt === 0 )
-      {
-        if((answer=== "amyloidBeta_1" && event.currentTarget.checked && event.currentTarget.value === "P-Tau") || (answer === "pTau_1" && event.currentTarget.checked && event.currentTarget.value === "Amyloid Beta"))
-        {
-          answer = "both";
-        }else if(event.currentTarget.checked && event.currentTarget.value === "Amyloid Beta")
-        {
-          answer = "amyloidBeta_1";
-        }else if(event.currentTarget.checked && event.currentTarget.value === "P-Tau" )
-        {
-          answer = "pTau_1";
-        }else if(this.state.currAnswer==="both" && event.currentTarget.value === "Amyloid Beta")
-        {
-          answer = "pTau_1";
-        }else if(this.state.currAnswer==="both" && event.currentTarget.value === "P-Tau")
-        {
-          answer = "amyloidBeta_1";
-        }
-
-      }else if(this.state.counter === 8 && this.state.followupQCnt ===1)
+      //for question 8 medication, handle this for medication list
+      if((this.state.counter === 8 || this.state.counter ===11) && !this.state.followupQFlag)
       {
         if(event.currentTarget.checked && !answer)
         {
@@ -167,40 +151,8 @@ class App extends Component {
   }
 
   handleTextChange(event) {
-    var answer= this.state.currAnswer;
-    
-    if (this.state.counter === 7)
-    {
-      //console.log("event.currentTarget.value: "+ event.currentTarget.value);
-      //console.log("event.currentTarget.name: "+ event.currentTarget.name);
-      //when we are in question#8 memory testing
-      if(typeof answer === "string")
-      {
-        //initialize the answer variable into object to store multiple text input from the memory testing question
-        answer={
-          MMSE:"",
-          MoCA:"",
-          CDR:""
-        }
-      }
-      else
-      {
-        answer[event.currentTarget.name] = event.currentTarget.value;
-      }
-
-      // if(event.currentTarget.name === "MMSE")
-      // {
-      //   answer.MMSE=event.currentTarget.value;
-      // }
-
-     // console.log("in question#8, answer: ", answer);
-
-    }
-    else{
-      answer=event.currentTarget.value;
-    } 
     this.setState({
-      currAnswer: answer
+      currAnswer: event.currentTarget.value
     });
 
     // this.setState({
@@ -251,11 +203,33 @@ handleClickBack() {
         break;
       
       case 3:
+
+        if(!this.state.followupQFlag && this.state.currAnswer === 'Yes')
+        {
+          updateAnswer = update(this.state.answer,{geneticTesting:{taken:{$set:"yes"}}});
+        }else
+        {
+          updateAnswer = update(this.state.answer,{geneticTesting:{taken:{$set:"no"}}});
+        }
         //for question 4 genetic testing
-        if (this.state.followupQCnt ===0 && this.state.currAnswer==='Yes') { 
-          updateAnswer = update(this.state.answer,{geneticTesting:{$set:"apoE4_1"}});
-        } else {
-          updateAnswer = update(this.state.answer,{geneticTesting:{$set:"no"}});
+        if (this.state.followupQCnt === 0 && this.state.currAnswer==='Yes') 
+        { 
+          updateAnswer = update(this.state.answer,{geneticTesting:{taken:{$set:"apoE4_1"}}});
+        } 
+
+        if (this.state.followupQCnt === 0 && this.state.currAnswer==='No') 
+        {
+          updateAnswer = update(this.state.answer,{geneticTesting:{taken:{$set:"apoE4_0"}}});
+        }
+
+        if (this.state.followupQCnt ===1 && this.state.currAnswer === 'No')
+        {
+          updateAnswer = update(this.state.answer,{geneticTesting:{consent:{$set:"no"}}});
+        }
+
+        if (this.state.followupQCnt ===1 && this.state.currAnswer === 'Yes')
+        {
+          updateAnswer = update(this.state.answer,{geneticTesting:{consent:{$set:"yes"}}});
         }
         this.setState({
           answer:updateAnswer
@@ -273,11 +247,7 @@ handleClickBack() {
       
       case 5:
         //for question 6 PET Scan
-        if (this.state.followupQCnt ===0 && this.state.currAnswer==='Yes') { 
-          updateAnswer = update(this.state.answer,{pet:{$set:"amyloidBeta_1"}});
-        } else {
-          updateAnswer = update(this.state.answer,{pet:{$set:"no"}});
-        }
+        updateAnswer = update(this.state.answer,{pet:{$set:this.state.currAnswer.toLowerCase()}});
         this.setState({
           answer:updateAnswer
         });
@@ -293,17 +263,8 @@ handleClickBack() {
       break;
 
       case 7:
-        //for question 8 memory testing
-        if (this.state.followupQFlag) {
-          console.log("currAnswer: "+ this.state.currAnswer);
-          //in followup question
-          updateAnswer = update(this.state.answer,{memoryEval: {$merge:this.state.currAnswer}});
-          console.log("updateAnswer: ", updateAnswer);  
-        } else {
-          //in regular question
-          updateAnswer = update(this.state.answer,{memoryEval: {taken:{$set:true}}});
-
-        }
+        //for question 8 stroke in last 12 months
+        updateAnswer = update(this.state.answer,{stroke:{$set:this.state.currAnswer.toLowerCase()}});
         this.setState({
           answer:updateAnswer
         });
@@ -311,12 +272,18 @@ handleClickBack() {
 
       case 8:
         //for question 9 medication 
-        if (this.state.followupQCnt === 0) {  
-          updateAnswer = update(this.state.answer,{prescriptionDuration:{$set:this.state.currAnswer}});
+        if(this.state.followupQFlag)
+        {
+          if (this.state.followupQCnt ===0) { 
+            updateAnswer = update(this.state.answer,{medications:{acceptableTime:{$set:this.state.currAnswer.toLowerCase()}}});
+          }
+
         }
-         else if (this.state.followupQCnt ===1) { 
-          updateAnswer = update(this.state.answer,{medications:{$push:this.state.currAnswer}});
+        else
+        {
+          updateAnswer = update(this.state.answer,{medications:{list:{$push:this.state.currAnswer}}});
         }
+        
 
         this.setState({
           answer:updateAnswer
@@ -325,12 +292,35 @@ handleClickBack() {
       break;
 
       case 9:
-        //for question 10 primary care
+        //for question 10 family memeber/caregiver
+        updateAnswer = update(this.state.answer,{informant:{$set:this.state.currAnswer.toLowerCase()}});
+        this.setState({
+          answer:updateAnswer
+        });
+        break;
+      case 10:
+        //for question 11 primary care
         updateAnswer = update(this.state.answer,{primaryCare:{$set:this.state.currAnswer.toLowerCase()}});
         this.setState({
           answer:updateAnswer
         });
       break;
+
+      case 11:
+        //for question 12 reason to use this app
+        if(this.state.followupQFlag)
+        {
+          if (this.state.followupQCnt ===0) { 
+            updateAnswer = update(this.state.answer,{opinion:{otherText:{$set:this.state.currAnswer}}});
+          }
+
+        }
+        else
+        {
+          console.log("in case 11 push the answer list");
+          updateAnswer = update(this.state.answer,{opinion:{list:{$push:this.state.currAnswer}}});
+        }
+        break;
 
       default:
           console.log("current counter: ", counter," this current counter is not been handle in the switch statement. Mostly like there is additional questions in the questionaire.js");
@@ -352,7 +342,20 @@ handleClickBack() {
        this.setState({
         followupQCnt: followupQCnt
        })
-       setTimeout(()=>this.setFollowupQuestion(counter,followupQCnt),300);
+
+       //for genetic testing question only if the taken is no then display the second follow up question
+       if(counter === 3 && this.state.answer.geneticTesting.taken === 'no')
+       {
+          setTimeout(()=>this.setFollowupQuestion(counter,1),300);
+       }else{
+         
+        setTimeout(()=>this.setNextQuestion(),300);
+       }
+       
+       //other than genetic testing question follow the same followup question set up flow
+       if(counter !== 3 ){
+          setTimeout(()=>this.setFollowupQuestion(counter,followupQCnt),300);
+      }
 
       } else {
         //current question is the last follow up question so set up the next question
@@ -362,8 +365,8 @@ handleClickBack() {
     } else {
       //current question is not a follow up question
 
-      if (this.state.currAnswer === 'Yes' && typeof questionaire[counter].followupQ !=='string') {
-        //this current question's answer is yes and current question has follow up questions
+      if (typeof questionaire[counter].followupQ !=='string') {
+        //the current question has follow up questions
          if(typeof this.state.followupQCnt === 'string') {
           //first time in follow up question
           //set the follow question's counter to 0
@@ -371,8 +374,41 @@ handleClickBack() {
             followupQCnt: 0
           });
 
-           //set up followupQuestion
-        setTimeout(()=>this.setFollowupQuestion(counter,0),300);
+           //set up followupQuestion for genetic testing and medication questions
+           switch(counter){
+             case 3:
+                  //for genetic testing quetion
+                  if(this.state.currAnswer === 'Yes')
+                  {
+                    //if the answer from genetic testing is yes then display the first follow up question
+                    this.setState({
+                      followupQCnt: 0
+                     })
+                    setTimeout(()=>this.setFollowupQuestion(counter,0),300);
+                  }
+                  if(this.state.currAnswer === 'No')
+                  {
+                    //the answer is no from genetic testing then display second follow up question
+                    this.setState({
+                      followupQCnt: 1
+                     })
+                    setTimeout(()=>this.setFollowupQuestion(counter,1),300);
+                  }
+
+              break;
+            
+             case 11:
+                  //for reason for using the app question
+                  if(this.state.currAnswer.includes("Other")){
+                    setTimeout(()=>this.setFollowupQuestion(counter,0),300);
+                  }
+              break;
+
+            default:
+              setTimeout(()=>this.setFollowupQuestion(counter,0),300);
+              break;
+           }
+        
         }
 
 
@@ -391,27 +427,27 @@ handleClickBack() {
 
   handleSubmit() {
     console.log("SUBMIT");
-    let objectQuery = {
-      zipcode: this.state.answer.zipcode,
-      age: this.state.answer.age,
-      gender: this.state.answer.sex,
-      geneticTesting: this.state.answer.genticTesting,
-      mri: this.state.answer.mri,
-      pet: this.state.answer.pet,
-      spinalTap: this.state.answer.spinalTap,
-      memoryEval: {
-        MMSE: this.state.answer.memoryEval.MMSE,
-        MoCA: this.state.answer.memoryEval.MoCA,
-        CDR: this.state.answer.memoryEval.CDR
-      },
-      prescriptionDuration: this.state.answer.prescriptionDuraiton,
-      medications: this.state.answer.medications,
-      primaryCare: this.state.answer.primaryCare
-    }
+    // let objectQuery = {
+    //   zipcode: this.state.answer.zipcode,
+    //   age: this.state.answer.age,
+    //   gender: this.state.answer.sex,
+    //   geneticTesting: this.state.answer.geneticTesting,
+    //   mri: this.state.answer.mri,
+    //   pet: this.state.answer.pet,
+    //   spinalTap: this.state.answer.spinalTap,
+    //   memoryEval: {
+    //     MMSE: this.state.answer.memoryEval.MMSE,
+    //     MoCA: this.state.answer.memoryEval.MoCA,
+    //     CDR: this.state.answer.memoryEval.CDR
+    //   },
+    //   prescriptionDuration: this.state.answer.prescriptionDuraiton,
+    //   medications: this.state.answer.medications,
+    //   primaryCare: this.state.answer.primaryCare
+    // }
 
-    console.log("OBJECT QUERY: ", objectQuery);
+    console.log("OBJECT QUERY: ", this.state.answer);
 
-    axios.post('/query', objectQuery)
+    axios.post('/query', this.state.answer)
     .then((results) => {
       this.setState({
         results: results.data
@@ -495,7 +531,7 @@ handleClickBack() {
         </header>
         
     { this.state.results.length? this.renderResult() :
-      this.state.answer.primaryCare ? this.renderSubmit() : 
+      this.state.answer.opinion.list.length ? this.renderSubmit() : 
       this.renderQuiz()}
         </MuiThemeProvider>
       </div>

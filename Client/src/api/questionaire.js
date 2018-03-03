@@ -27,7 +27,13 @@ const questionaire = [
             type:'radio',
             options:[ 'Yes','No']
         
-        }]
+        },
+        {
+            question: 'Would your consent to genetic testing?',
+            type: 'radio',
+            options: ['Yes','No']
+        }
+        ]
     },
     {
         question: 'Have you had an MRI scan done?',
@@ -36,57 +42,62 @@ const questionaire = [
         followupQ:''
     },
     {
-        question: 'Have you had a PET scan done?',
+        question: 'Are you okay with getting PET done for amyloid imaging?',
         type:'radio',
         options:[ 'Yes','No'],
-        followupQ:[{
-            question: 'Amyloid Beta detected?',
-            type:'radio',
-            options:[ 'Yes','No']
-        }]
+        followupQ:''
     },
     {
-        question: 'Have you had an spinal tap done?',
+        question: 'Are you okay with having a lumbar puncture/spinal tab done for detection of Amyloid Beta/P-Tau?',
         type:'radio',
         options:[ 'Yes','No'],
-        followupQ:[{
-            question: 'Check all that are detected:',
-            type:'checkbox',
-            options:[ 'Amyloid Beta','P-Tau']
-        }]
+        followupQ:''
+
     },
     {
-        question: 'Have you had memory testing done?',
+        question: 'Did you have a stroke/transient ischemic attack in the last 12 months?',
         type:'radio',
         options:[ 'Yes','No'],
-        followupQ:[{
-            question: 'Fill in all scores that you done:',
-            type:'text',
-            options:[ 'MMSE','MoCA','CDR']
-        }]
+        followupQ:''
+
     },
     {
-        question: 'Have you been prescribed medication for symptomatic relief?',
-        type:'radio',
-        options:[ 'Yes','No'],
+        question: 'Are you taking any anti-dementia medication? Check all that apply.',
+        type:'checkbox',
+        options:['Aricept','Exelon','Razadyne ER','Namenda','None'],
         followupQ:[
             {
-                question: 'How long have been taking the medication? (in months)',
-                type:'text',
-                options:''
-            },
-            {
-                question: 'What dementia medication are you taking? Check all that apply.',
-                type:'checkbox',
-                options:['Aricept','Exelon','Razadyne ER','Namenda']
+                parentAnswer:'',
+                question: 'Have you taking these medications for more than 10 weeks?',
+                type:'radio',
+                options:['Yes','No']
             }
         ]
+    },
+    {
+        question: 'Do you have a family member or a caregiver that will accompany you?',
+        type:'radio',
+        options:[ 'Yes','No'],
+        followupQ:''
     },
     {
         question: 'Do you have a primary care physician?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:''
+    },
+    {
+        question:"Why are you using this app? Check all that apply.",
+        type:'checkbox',
+        options:["Family history of Alzhimer's Disease","Interested in Clinical research","Memory Complants","Other"],
+        followupQ:[{
+            question:"Please write in your reason.",
+            type:'text',
+            options:''
+
+        }]
+
+        
     }
 
 ]
