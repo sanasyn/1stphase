@@ -8,7 +8,7 @@ const getFacilityDistance = (zip, facilities) => {
 
         return axios.get(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${zip}&destinations=${facilityAddress}&key=${APIKEY}`)
             .then((res) => {
-                let miles = (res.data.rows[0].elements[0].distance.text).slice(0,-3);
+                let miles = res.data.rows[0].elements[0].status === "OK" ? (res.data.rows[0].elements[0].distance.text).slice(0,-3) : "100000";
                 facility.distance = parseInt(miles.replace(/,/g,''));
 
                 return facility
