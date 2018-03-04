@@ -34,7 +34,7 @@ class App extends Component {
         stroke: "", 
         medications: {
             list: [],
-            acceptableTime:"" //default to 0
+            acceptableTime:"no" //default to 0
          },
         informant: "",
         primaryCare: "",
@@ -111,6 +111,19 @@ class App extends Component {
     });
   }
 
+  getMatchResult(answer)
+  {
+    console.log("getMatchResult");
+    axios.post('/query', answer)
+            .then((results) => {
+              this.setState({
+                results: results.data
+              })
+            })
+            .catch(error => {
+              console.log("ERROR", error)
+            });
+  }
 
   //this function will set the answer for the current question and check for any follwo up question and display follow up questions.
   handleAnswerSelected(event) {
@@ -243,7 +256,7 @@ handleClickBack() {
           answer:updateAnswer
         });
       
-      break;
+        break;
       
       case 5:
         //for question 6 PET Scan
@@ -251,7 +264,7 @@ handleClickBack() {
         this.setState({
           answer:updateAnswer
         });
-      break;
+        break;
 
       case 6:
         //for question 7 spinal tap 
@@ -260,7 +273,7 @@ handleClickBack() {
           answer:updateAnswer
         });
 
-      break;
+        break;
 
       case 7:
         //for question 8 stroke in last 12 months
@@ -268,7 +281,7 @@ handleClickBack() {
         this.setState({
           answer:updateAnswer
         });
-      break;
+        break;
 
       case 8:
         //for question 9 medication 
@@ -289,7 +302,7 @@ handleClickBack() {
           answer:updateAnswer
         });
       
-      break;
+        break;
 
       case 9:
         //for question 10 family memeber/caregiver
@@ -304,7 +317,7 @@ handleClickBack() {
         this.setState({
           answer:updateAnswer
         });
-      break;
+        break;
 
       case 11:
         //for question 12 reason to use this app
@@ -317,28 +330,27 @@ handleClickBack() {
         }
         else
         {
-          console.log("in case 11 push the answer list");
-          console.log("currAnswer:", this.state.currAnswer);
           updateAnswer = update(this.state.answer,{opinion:{list:{$push:this.state.currAnswer}}});
         }
-
+        console.log("store currAnswer into the asnwer object");
         this.setState({
-          answer:updateAnswer
+          answer:updateAnswer,
         });
         break;
 
       default:
-          console.log("current counter: ", counter," this current counter is not been handle in the switch statement. Mostly like there is additional questions in the questionaire.js");
+          console.log("current counter: ", counter," this current counter is not been handle in the switch statement. Moss likely there is additional questions in the questionaire.js that is not being handled for storing user input.");
         break;
 
     }
+
+    console.log("outside of store answer swtich");
 
     //below is the flow to set up the next question to display
     //check if the current question a follow up question
     if (this.state.followupQFlag) {
       //current question is a follow up question
       //checking if this is the last follow up qeustion
-      console.log("total # of follow up q: " +questionaire[counter].followupQ.length);
 
       if (this.state.followupQCnt < questionaire[counter].followupQ.length-1) {
         //current question is not the last followup question
@@ -352,7 +364,8 @@ handleClickBack() {
        if(counter === 3 && this.state.answer.geneticTesting.taken === 'no')
        {
           setTimeout(()=>this.setFollowupQuestion(counter,1),300);
-       }else{
+       }
+       else{
          
         setTimeout(()=>this.setNextQuestion(),300);
        }
@@ -363,13 +376,23 @@ handleClickBack() {
       }
 
       } else {
-        //current question is the last follow up question so set up the next question
+        if(this.state.questionId < questionaire.length)
+        {
+          //current question is the last follow up question so set up the next question
         setTimeout(()=>this.setNextQuestion(),300);
+          
+        }else
+        {
+          //last of the last question, send answer object
+          this.getMatchResult(this.state.answer);
+
+        }
       }
 
-    } else {
+    } 
+    else {
       //current question is not a follow up question
-
+      console.log("not in follow up question");
       if (typeof questionaire[counter].followupQ !=='string') {
         //the current question has follow up questions
          if(typeof this.state.followupQCnt === 'string') {
@@ -401,11 +424,26 @@ handleClickBack() {
                   }
 
               break;
+
+             case 8:
+                if(this.state.currAnswer.includes("None")){
+                  setTimeout(()=>this.setNextQuestion(),300);
+                }
+                else{
+                  
+                  setTimeout(()=>this.setFollowupQuestion(counter,0),300);
+                }
+              
+              break;
             
              case 11:
                   //for reason for using the app question
                   if(this.state.currAnswer.includes("Other")){
                     setTimeout(()=>this.setFollowupQuestion(counter,0),300);
+                  }
+                  else{
+                    //in the last question so send answer object
+                    this.getMatchResult(this.state.answer);
                   }
               break;
 
@@ -415,16 +453,22 @@ handleClickBack() {
            }
         
         }
-
-
-      } else {
+      } 
+      else 
+      {
         //set up next question as normal
         if(this.state.questionId < questionaire.length) {
+          
           setTimeout(()=>this.setNextQuestion(),300);
-        } else{
-          //reach to end of the question, send the answer back and diplay result
+
+        } 
+        else
+        {
+          //reach to end of the question that does not have follow up question. send the answer back and diplay result
           //setTimeout(()=>this.setResults(this.getResults()),300);
           console.log("action: send the input to matching and display results")
+          this.getMatchResult(this.state.answer);
+            
         }
       }
     }
@@ -521,8 +565,8 @@ handleClickBack() {
 
   renderResult() {
     return (
-      <Result results={this.state.results}
-      />
+      // <Result results={this.state.results}/>
+      <h2>Result display here</h2>
     );
   }
 
@@ -536,9 +580,11 @@ handleClickBack() {
           {/* <img src="./SanaSynTitle.svg" alt="SanaSyn" alt="SanaSyn"/> */}
         </header>
         
-    { this.state.results.length? this.renderResult() :
+    {/* { this.state.results.length? this.renderResult() :
       this.state.answer.opinion.list.length ? this.renderSubmit() : 
-      this.renderQuiz()}
+      this.renderQuiz()} */}
+
+      { this.state.results.length ? this.renderResult() : this.renderQuiz()}
         </MuiThemeProvider>
       </div>
     );
