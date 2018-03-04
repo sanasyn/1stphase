@@ -44,9 +44,9 @@ function Quiz(props){
                 />
                 
 
-                <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px", margin:"10px"}} onClick={props.onClickBack}> Back</FlatButton>
+                <FlatButton style={{backgroundColor: "#3b4e8c",fontSize:"2em", hoverColor: "#b63d34", marginTop:"20px", margin:"10px", color:'#fff'}} onClick={props.onClickBack}>BACK</FlatButton>
 
-                <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px", margin:"10px"}} onClick={props.onClickNext}> Next</FlatButton>
+                <FlatButton style={{backgroundColor: "#3b4e8c", hoverColor: "#20759c", marginTop:"20px", margin:"10px", color:'#fff',fontSize:"2em",}} onClick={props.onClickNext}> NEXT</FlatButton>
 
                 
             </div>

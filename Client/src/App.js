@@ -30,18 +30,18 @@ class App extends Component {
         geneticTesting: {
           taken: "no",  //could also be apoE4_0 or apoE4_1
           consent: "yes" // mark as yes if already taken
-      },
-      stroke: "", 
-      medications: {
-          list: [],
-          acceptableTime:"" //default to 0
-      },
-      informant: "",
-      primaryCare: "",
-      opinion: {
-        list:[],
-        otherText:""
-      }
+        },
+        stroke: "", 
+        medications: {
+            list: [],
+            acceptableTime:"" //default to 0
+         },
+        informant: "",
+        primaryCare: "",
+        opinion: {
+          list:[],
+          otherText:""
+        }
       },
       inputError:true,
       results:[]
@@ -310,7 +310,7 @@ handleClickBack() {
         //for question 12 reason to use this app
         if(this.state.followupQFlag)
         {
-          if (this.state.followupQCnt ===0) { 
+          if (this.state.followupQCnt === 0) { 
             updateAnswer = update(this.state.answer,{opinion:{otherText:{$set:this.state.currAnswer}}});
           }
 
@@ -318,8 +318,13 @@ handleClickBack() {
         else
         {
           console.log("in case 11 push the answer list");
+          console.log("currAnswer:", this.state.currAnswer);
           updateAnswer = update(this.state.answer,{opinion:{list:{$push:this.state.currAnswer}}});
         }
+
+        this.setState({
+          answer:updateAnswer
+        });
         break;
 
       default:
@@ -526,8 +531,9 @@ handleClickBack() {
     return (
       <div>
       <MuiThemeProvider>
-        <header style={{marginTop: "0", backgroundColor: "#6ab6c5"}}>
-          <h1 style={{marginTop: "0", padding: "10px", color: "#eeeeee", fontWeight:"bold"}}>SanaSyn</h1>
+        <header style={{marginTop: "0", backgroundColor: "#20759c",minHeight:'255'}}>
+          <h1 style={{marginTop: "0", padding: "10px", color: "#fff", fontWeight:"bold", fontFamily:"Acme"}}>SanaSyn</h1>
+          {/* <img src="./SanaSynTitle.svg" alt="SanaSyn" alt="SanaSyn"/> */}
         </header>
         
     { this.state.results.length? this.renderResult() :
