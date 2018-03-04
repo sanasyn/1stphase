@@ -27,6 +27,8 @@ export default (results, stateCheck) => {
                             <TableRowColumn>{i}</TableRowColumn>
                             <TableRowColumn>{study.nct_id}</TableRowColumn>
                             <TableRowColumn>{study.official_title}</TableRowColumn>
+                            <TableRowColumn>{study.city},{study.state}</TableRowColumn>
+                            <TableRowColumn>{study.zip}</TableRowColumn>
                         </TableRow>
                     )
                 }

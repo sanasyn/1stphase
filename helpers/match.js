@@ -75,13 +75,13 @@ function runQuery(req, res) {
 	.andWhere(knex.raw("criteria_inc NOT ILIKE any ( :careSearch)", 
 			{careSearch: caregiverQueryInc(query.stroke)}
 			))
-	.limit(10)
-	// .then(rows => {
-	// 	return getFacilityDistance(query.zipcode, rows)
-	// 		.then((results) => {
-	// 			return results.sort((a,b) => a.distance - b.distance)
-	// 		})
-	// })
+	.limit(1)
+	.then(rows => {
+		return getFacilityDistance(query.zipcode, rows)
+			.then((results) => {
+				return results.sort((a,b) => a.distance - b.distance)
+			})
+	})
 	.then((rows) => {
 		console.log(rows)
 		res.send(rows)
