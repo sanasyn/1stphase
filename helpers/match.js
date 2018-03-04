@@ -48,8 +48,11 @@ function runQuery(req, res) {
 		.orWhere('gender', 'All')
 	})
 	//GOOD
-	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :search)", 
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :search)",
 			{search: geneticQueryEx(query.geneticTesting)}
+			))
+	.andWhere(knex.raw("criteria_inc ILIKE ( :search)", 
+			{search: geneticQueryInc(query.geneticTesting)}
 			))
 	// GOOD
 	.andWhere(knex.raw("criteria_ex NOT ILIKE :mriSearch", 
@@ -68,20 +71,21 @@ function runQuery(req, res) {
 			{strokeSearch: strokeQuery(query.stroke)}
 			))
 	//GOOD
-	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :arraySearch)", 
 			{arraySearch: medicationsQuery(query.medications)}
 			))
 	//GOOD
 	.andWhere(knex.raw("criteria_inc NOT ILIKE any ( :careSearch)", 
 			{careSearch: caregiverQueryInc(query.stroke)}
 			))
-	.limit(1)
-	.then(rows => {
-		return getFacilityDistance(query.zipcode, rows)
-			.then((results) => {
-				return results.sort((a,b) => a.distance - b.distance)
-			})
-	})
+	// .limit(20)
+	// .then(rows => {
+	// 	return getFacilityDistance(query.zipcode, rows)
+	// 		.then((results) => {
+	// 			console.log(results)
+	// 			res.send(results)
+	// 		})
+	// })
 	.then((rows) => {
 		console.log(rows)
 		res.send(rows)
