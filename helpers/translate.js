@@ -14,7 +14,7 @@ function geneticQueryInc(genetic) {
 function geneticQueryEx(genetic) {
 	let queryGenetic = [''];
 	if (genetic.consent === 'no') {
-		queryGenetic = ['%APOE%','%genetic%testing%','%refus%APOE%'];
+		queryGenetic = ['%APOE%','%genetic%'];
 	}
 	console.log("GENETIC Ex: ", queryGenetic)
 	return queryGenetic;
@@ -34,7 +34,7 @@ function mriQuery(mri) {
 function petQuery(pet) {
 	let petArray = [''];
 	if (pet === 'no') {
-		petArray = ['%contraindication%PET%', "%florbetapir%", "%F-AV-1451%"]
+		petArray = ['%PET%', "%florbetapir%", "%F-AV-1451%"]
 	}
 	console.log("PET: ", petArray);
 	return petArray;
@@ -44,7 +44,7 @@ function petQuery(pet) {
 function spinalQuery(spinal) {
 	let spinalArray = [''];
 	if (spinal === 'no') {
-		spinalArray = ['%contraindication%lumbar%']
+		spinalArray = ['%lumbar%','%LP%']
 	} 
 	console.log("SPINAL ARRAY: ", spinalArray);
 	return spinalArray;
@@ -91,7 +91,7 @@ function medicationsQuery(medications) {
 	})
 
 	if (queryArray.length === 0) {
-		queryArray = ['%']
+		queryArray = ['']
 	}
 	console.log("MEDICATIONS: ", queryArray);
 
