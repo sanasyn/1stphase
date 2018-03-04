@@ -97,6 +97,7 @@ class App extends Component {
     });
   }
 
+
   setFollowupQuestion(counter,followupQCnt) {
     
     //display follow questions
@@ -111,11 +112,13 @@ class App extends Component {
     });
   }
 
-  getMatchResult(answer)
+  getMatchResult()
   {
     console.log("getMatchResult");
-    axios.post('/query', answer)
+    console.log("answer: ", this.state.answer);
+    axios.post('./query', this.state.answer)
             .then((results) => {
+              console.log("results: ", results.data);
               this.setState({
                 results: results.data
               })
@@ -175,10 +178,31 @@ class App extends Component {
   }
 
 handleClickBack() {
-  const counter = this.state.counter-2;
+  const counter = this.state.counter-1;
+  const questionId = this.state.questionId-1;
+  let preAnswer="";
+  switch(counter)
+  {
+    case 0:
+      preAnswer=this.state.answer.zipcode;
+      break;
+    case 1:
+      preAnswer=this.state.answer.age;
+      break;
+    default:
+      break;
+
+  }
+
   this.setState({
-    counter: counter
-  }, this.handleClickNext)
+    counter: counter,
+    questionId: questionId,
+    currAnswer: preAnswer,
+    question: questionaire[counter].question,
+    answerInputType:questionaire[counter].type,
+    answerOptions: questionaire[counter].options,
+    followupQ:questionaire[counter].followupQ
+  })
 }
   //when next button is clicked, set up the next question to be displayed
  handleClickNext() {
@@ -333,9 +357,13 @@ handleClickBack() {
           updateAnswer = update(this.state.answer,{opinion:{list:{$push:this.state.currAnswer}}});
         }
         console.log("store currAnswer into the asnwer object");
+        console.log("currAnswer: ", this.state.currAnswer);
+        console.log("updateAnswer: ", updateAnswer);
         this.setState({
           answer:updateAnswer,
         });
+
+        
         break;
 
       default:
@@ -344,11 +372,10 @@ handleClickBack() {
 
     }
 
-    console.log("outside of store answer swtich");
-
     //below is the flow to set up the next question to display
     //check if the current question a follow up question
-    if (this.state.followupQFlag) {
+    if (this.state.followupQFlag) 
+    {
       //current question is a follow up question
       //checking if this is the last follow up qeustion
 
@@ -384,7 +411,7 @@ handleClickBack() {
         }else
         {
           //last of the last question, send answer object
-          this.getMatchResult(this.state.answer);
+         setTimeout(()=> this.getMatchResult(),300);
 
         }
       }
@@ -392,7 +419,6 @@ handleClickBack() {
     } 
     else {
       //current question is not a follow up question
-      console.log("not in follow up question");
       if (typeof questionaire[counter].followupQ !=='string') {
         //the current question has follow up questions
          if(typeof this.state.followupQCnt === 'string') {
@@ -443,7 +469,7 @@ handleClickBack() {
                   }
                   else{
                     //in the last question so send answer object
-                    this.getMatchResult(this.state.answer);
+                    setTimeout(()=> this.getMatchResult(),300);
                   }
               break;
 
@@ -465,9 +491,9 @@ handleClickBack() {
         else
         {
           //reach to end of the question that does not have follow up question. send the answer back and diplay result
-          //setTimeout(()=>this.setResults(this.getResults()),300);
+          
           console.log("action: send the input to matching and display results")
-          this.getMatchResult(this.state.answer);
+          setTimeout(()=> this.getMatchResult(),300);
             
         }
       }
