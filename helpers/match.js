@@ -31,7 +31,9 @@ function getConnectionOptions() {
 function runQuery(req, res) {
 	console.log("BODY: ", req.body);
 	let query = req.body;
-	return knex.select('nct_id','official_title','facility_id','city','state','zip')
+	return knex
+	// .distinct()
+	.select('nct_id','official_title','facility_id','city','state','zip')
 	.from('aact_master')
 	.where(function() {
 		this
@@ -47,44 +49,49 @@ function runQuery(req, res) {
 		.where('gender', query.gender)
 		.orWhere('gender', 'All')
 	})
-	//GOOD
-	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :search)", 
+	// // GOOD
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :search)",
 			{search: geneticQueryEx(query.geneticTesting)}
 			))
-	// GOOD
+	.andWhere(knex.raw("criteria_inc ILIKE ( :search)", 
+			{search: geneticQueryInc(query.geneticTesting)}
+			))
+	// // GOOD
 	.andWhere(knex.raw("criteria_ex NOT ILIKE :mriSearch", 
 			{mriSearch: mriQuery(query.mri)}
 			))
-	//GOOD
+	// // GOOD
 	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :arraySearch)",
 			{arraySearch: petQuery(query.pet)}
 			))
-	//GOOD
-	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :spinalSearch)", 
+	// //GOOD
+	.andWhere(knex.raw("criteria_ex NOT LIKE any ( :spinalSearch)", 
 			{spinalSearch: spinalQuery(query.spinalTap)}
 			))
-	//GOOD
+	// //GOOD
 	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :strokeSearch)", 
 			{strokeSearch: strokeQuery(query.stroke)}
 			))
-	//GOOD
-	.andWhere(knex.raw("criteria_inc ilike any ( :arraySearch)", 
+	// // //GOOD
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :arraySearch)", 
 			{arraySearch: medicationsQuery(query.medications)}
 			))
-	//GOOD
+	// // //GOOD
 	.andWhere(knex.raw("criteria_inc NOT ILIKE any ( :careSearch)", 
-			{careSearch: caregiverQueryInc(query.stroke)}
+			{careSearch: caregiverQueryInc(query.informant)}
 			))
-	.limit(1)
-	.then(rows => {
-		return getFacilityDistance(query.zipcode, rows)
-			.then((results) => {
-				return results.sort((a,b) => a.distance - b.distance)
-			})
-	})
+	// .limit(20)
+	// .then(rows => {
+	// 	return getFacilityDistance(query.zipcode, rows)
+	// 		.then((results) => {
+	// 			console.log(results)
+	// 			res.send(results)
+	// 		})
+	// })
 	.then((rows) => {
 		console.log(rows)
 		res.send(rows)
+
 	})
 	.catch((error) => {
 		res.send(new Error('Error querying database. ', error));
