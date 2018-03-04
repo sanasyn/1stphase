@@ -14,7 +14,7 @@ import {
 export default (results, stateCheck) => {
     return (
         <Table>
-            <TableHeader>
+            <TableHeader displaySelectAll={false}>
                 <TableRow>
                     <TableHeaderColumn>NCT_ID</TableHeaderColumn>
                     <TableHeaderColumn>Title</TableHeaderColumn>

@@ -24,7 +24,7 @@ function geneticQueryEx(genetic) {
 function mriQuery(mri) {
 	let queryMri = '';
 	if (mri === 'no') {
-		queryMri = '%MRI%';
+		queryMri = '%contraindication%MR%';
 	}
 	console.log("MRI: ", queryMri);
 	return queryMri;
