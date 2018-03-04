@@ -26,7 +26,7 @@ class App extends Component {
       answer:{
         zipcode:"",
         age: "",
-        sex: "",
+        gender: "",
         geneticTesting: {
           taken: "no",  //could also be apoE4_0 or apoE4_1
           consent: "yes" // mark as yes if already taken
@@ -233,7 +233,7 @@ handleClickBack() {
 
       case 2:
         //for question 3 sex
-         updateAnswer = update(this.state.answer,{sex:{$set:this.state.currAnswer}});
+         updateAnswer = update(this.state.answer,{gender:{$set:this.state.currAnswer}});
         this.setState({
           answer:updateAnswer
         });
@@ -591,8 +591,8 @@ handleClickBack() {
 
   renderResult() {
     return (
-      // <Result results={this.state.results}/>
-      <h2>Result display here</h2>
+      <Result results={this.state.results}/>
+      // <h2>Result display here</h2>
     );
   }
 
