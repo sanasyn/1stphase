@@ -112,11 +112,13 @@ class App extends Component {
     });
   }
 
-  getMatchResult(answer)
+  getMatchResult()
   {
     console.log("getMatchResult");
-    axios.post('/query', answer)
+    console.log("answer: ", this.state.answer);
+    axios.post('./query', this.state.answer)
             .then((results) => {
+              console.log("results: ", results.data);
               this.setState({
                 results: results.data
               })
@@ -186,6 +188,8 @@ handleClickBack() {
       break;
     case 1:
       preAnswer=this.state.answer.age;
+      break;
+    default:
       break;
 
   }
@@ -353,9 +357,13 @@ handleClickBack() {
           updateAnswer = update(this.state.answer,{opinion:{list:{$push:this.state.currAnswer}}});
         }
         console.log("store currAnswer into the asnwer object");
+        console.log("currAnswer: ", this.state.currAnswer);
+        console.log("updateAnswer: ", updateAnswer);
         this.setState({
           answer:updateAnswer,
         });
+
+        
         break;
 
       default:
@@ -366,7 +374,8 @@ handleClickBack() {
 
     //below is the flow to set up the next question to display
     //check if the current question a follow up question
-    if (this.state.followupQFlag) {
+    if (this.state.followupQFlag) 
+    {
       //current question is a follow up question
       //checking if this is the last follow up qeustion
 
@@ -402,7 +411,7 @@ handleClickBack() {
         }else
         {
           //last of the last question, send answer object
-          this.getMatchResult(this.state.answer);
+         setTimeout(()=> this.getMatchResult(),300);
 
         }
       }
@@ -460,7 +469,7 @@ handleClickBack() {
                   }
                   else{
                     //in the last question so send answer object
-                    this.getMatchResult(this.state.answer);
+                    setTimeout(()=> this.getMatchResult(),300);
                   }
               break;
 
@@ -482,9 +491,9 @@ handleClickBack() {
         else
         {
           //reach to end of the question that does not have follow up question. send the answer back and diplay result
-          //setTimeout(()=>this.setResults(this.getResults()),300);
+          
           console.log("action: send the input to matching and display results")
-          this.getMatchResult(this.state.answer);
+          setTimeout(()=> this.getMatchResult(),300);
             
         }
       }
