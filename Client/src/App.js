@@ -97,6 +97,7 @@ class App extends Component {
     });
   }
 
+
   setFollowupQuestion(counter,followupQCnt) {
     
     //display follow questions
@@ -175,10 +176,29 @@ class App extends Component {
   }
 
 handleClickBack() {
-  const counter = this.state.counter-2;
+  const counter = this.state.counter-1;
+  const questionId = this.state.questionId-1;
+  let preAnswer="";
+  switch(counter)
+  {
+    case 0:
+      preAnswer=this.state.answer.zipcode;
+      break;
+    case 1:
+      preAnswer=this.state.answer.age;
+      break;
+
+  }
+
   this.setState({
-    counter: counter
-  }, this.handleClickNext)
+    counter: counter,
+    questionId: questionId,
+    currAnswer: preAnswer,
+    question: questionaire[counter].question,
+    answerInputType:questionaire[counter].type,
+    answerOptions: questionaire[counter].options,
+    followupQ:questionaire[counter].followupQ
+  })
 }
   //when next button is clicked, set up the next question to be displayed
  handleClickNext() {
@@ -344,8 +364,6 @@ handleClickBack() {
 
     }
 
-    console.log("outside of store answer swtich");
-
     //below is the flow to set up the next question to display
     //check if the current question a follow up question
     if (this.state.followupQFlag) {
@@ -392,7 +410,6 @@ handleClickBack() {
     } 
     else {
       //current question is not a follow up question
-      console.log("not in follow up question");
       if (typeof questionaire[counter].followupQ !=='string') {
         //the current question has follow up questions
          if(typeof this.state.followupQCnt === 'string') {
