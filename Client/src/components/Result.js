@@ -17,10 +17,10 @@ export default (results, stateCheck) => {
             <TableHeader displaySelectAll={false}>
                 <TableRow>
 
-                    <TableHeaderColumn style={{textAlign: 'left'}}>NCT_ID</TableHeaderColumn>
-                    <TableHeaderColumn style={{textAlign: 'left'}}>Title</TableHeaderColumn>
-                    <TableHeaderColumn style={{textAlign: 'left'}}>City, State</TableHeaderColumn>
-                    <TableHeaderColumn style={{textAlign: 'left'}}>Zip Codes</TableHeaderColumn>
+                    <TableHeaderColumn style={{paddingLeft: '0px'}}>NCT_ID</TableHeaderColumn>
+                    <TableHeaderColumn style={{paddingLeft: '0px'}}>Title</TableHeaderColumn>
+                    <TableHeaderColumn style={{paddingLeft: '0px'}}>City, State</TableHeaderColumn>
+                    <TableHeaderColumn style={{paddingLeft: '0px'}}>Zip Codes</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
