@@ -16,15 +16,17 @@ export default (results, stateCheck) => {
         <Table>
             <TableHeader displaySelectAll={false}>
                 <TableRow>
-                    <TableHeaderColumn>NCT_ID</TableHeaderColumn>
-                    <TableHeaderColumn>Title</TableHeaderColumn>
+
+                    <TableHeaderColumn style={{textAlign: 'left'}}>NCT_ID</TableHeaderColumn>
+                    <TableHeaderColumn style={{textAlign: 'left'}}>Title</TableHeaderColumn>
+                    <TableHeaderColumn style={{textAlign: 'left'}}>City, State</TableHeaderColumn>
+                    <TableHeaderColumn style={{textAlign: 'left'}}>Zip Codes</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
                 {results.results.map((study, i) => {
                     return (
                         <TableRow key={i}>
-                            <TableRowColumn>{i}</TableRowColumn>
                             <TableRowColumn>{study.nct_id}</TableRowColumn>
                             <TableRowColumn>{study.official_title}</TableRowColumn>
                             <TableRowColumn>{study.city},{study.state}</TableRowColumn>
