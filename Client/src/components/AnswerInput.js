@@ -12,8 +12,8 @@ function AnswerInput(props){
         return(
             <AnswerOption 
                 key={data}
-                inputClassName='radioCustomButton'
-                labelClassName="radioCustomLabel"
+                inputClassName='radioInput'
+                labelClassName="radioLabel"
                 answerContent={data}
                 inputType={props.answerInputType}
                 groupName="radioGroup"

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import Quiz from './components/Quiz';
 import questionaire from './api/questionaire';
 import update from 'react-addons-update';
@@ -577,6 +576,7 @@ handleClickBack() {
         onTextChange={this.handleTextChange}
         inputError={this.state.inputError}
         validateInputValue={this.validateInputValue}
+        counter={this.state.counter}
         />
     );
   }
@@ -605,6 +605,8 @@ handleClickBack() {
           <h1 style={{marginTop: "0", padding: "10px", color: "#fff", fontWeight:"bold", fontFamily:"Acme"}}>SanaSyn</h1>
           {/* <img src="./SanaSynTitle.svg" alt="SanaSyn" alt="SanaSyn"/> */}
         </header>
+
+        
         
     {/* { this.state.results.length? this.renderResult() :
       this.state.answer.opinion.list.length ? this.renderSubmit() : 
