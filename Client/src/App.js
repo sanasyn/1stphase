@@ -3,7 +3,9 @@ import Quiz from './components/Quiz';
 import questionaire from './api/questionaire';
 import update from 'react-addons-update';
 import Result from './components/Result';
+import LandingPage from './components/LandingPage';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import axios from 'axios';
 // import AnswerOption from './components/AnswerOption'
@@ -53,6 +55,7 @@ class App extends Component {
     this.validateInputValue=this.validateInputValue.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.renderResult=this.renderResult.bind(this);
+    this.renderLanding=this.renderLanding.bind(this);
 
   }
 
@@ -561,6 +564,12 @@ handleClickBack() {
 
   }
 
+    renderLanding() {
+    return (
+        <LandingPage />
+      );
+  }
+
   renderQuiz() {
     return (
       <Quiz
@@ -601,8 +610,8 @@ handleClickBack() {
     return (
       <div>
       <MuiThemeProvider>
-        <header style={{marginTop: "0", backgroundColor: "#20759c",minHeight:'255'}}>
-          <h1 style={{marginTop: "0", padding: "10px", color: "#fff", fontWeight:"bold", fontFamily:"Acme"}}>SanaSyn</h1>
+        <header style={{marginTop: "0", backgroundColor: "#20759c",minHeight:'255',borderTop: "solid #545454 8px"}}>
+          <h1 style={{marginTop: "0", padding: "6px", color: "#fff", fontFamily:"Acme", fontSize: "3.0em"}}><span style={{fontFamily: "Arial", letterSpacing: "-6px", fontSize: "0.7em", paddingRight: "14px", fontStyle: "italic", color: "black"}}>S&#423;</span>SanaSyn</h1>
           {/* <img src="./SanaSynTitle.svg" alt="SanaSyn" alt="SanaSyn"/> */}
         </header>
 
