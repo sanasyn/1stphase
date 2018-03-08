@@ -1,6 +1,7 @@
 const config = require('../config/config').zipcode;
 const pg = require('pg');
 const knex = require('knex')(getConnectionOptions());
+const zipcodes = require('zipcodes')
 
 function getConnectionOptions() {
 	return {
@@ -15,41 +16,65 @@ function getConnectionOptions() {
 	}
 }
 
-// Main function that invokes helper functions
+// Main function that invokes helper functions below
 function getDistance(source, facilities){
-    return getSourceZip(source)
-        .then((sourceZip) => facilityDistance(sourceZip, facilities))
+    return handleZipExceptions(facilities)
+        .then((modFacilities) => getSourceZip(source, modFacilities))
+        .then((obj) => facilityDistance(obj))
         .then((facility) => {
             return facility.sort((a,b) => a.distance - b.distance)
         })
         .catch((err) => console.log(err))
 }
 
+// Function to handle facilities that do not have zipcodes
+function handleZipExceptions(facilities){
+    const modifiedFacilities = facilities.map((facility) => {
+        if ((facility.zip === '' || facility.zip.length !== 5) && facility.country === 'United States'){
+            facility.zip = zipcodes.lookupByName(facility.city, facility.state)[0].zip;
+            return facility
+        }
+        else if (facility.zip === '' && facility.country === 'Canada'){
+            return knex
+                .select('zipcode')
+                .from('zipcodes')
+                .where('city', 'like', '%'+facility.city+'%')
+                .andWhere('state', 'like', '%'+facility.state+'%')
+                .then((row) => {
+                    facility.zip = row[0].zipcode
+                    return facility
+                })
+                .catch((err) => console.log(err))
+        }
+        else return facility
+    })
+    return Promise.all(modifiedFacilities);
+}
+
 // Function to return lat and long using user's zipcode
-function getSourceZip(source){
+function getSourceZip(source, facilities){
     return knex
         .select('zipcode', 'latitude', 'longitude')
         .from('zipcodes')
         .where('zipcode', source)
-        .limit(10)
         .then((row) => {
-            return row[0];
+            return {source: row[0], facilities: facilities};
         })
         .catch((err) => console.log(err))
 }
 
 // Map through facility results and perform math calculation for distance
-function facilityDistance(source, facilities){
-    const modifiedObj = facilities.map((facility) => {
+function facilityDistance(obj){
+    const modifiedObj = obj.facilities.map((facility) => {
         return knex
-                .select('zipcode', 'latitude', 'longitude')
-                .from('zipcodes')
-                .where('zipcode', facility.zip)
-                .limit(10)
-                .then((row) => {
-                    return row[0];
+            .select('zipcode', 'latitude', 'longitude')
+            .from('zipcodes')
+            .where('zipcode', facility.zip)
+            .then((row) => {
+                return row[0];
             })
-            .then((dest) => doMath(source, dest))
+            .then((dest) => doMath(obj.source, dest))
+            .catch((err) => console.log(err))
             .then((dist) => {
                 facility.distance = dist;
                 return facility

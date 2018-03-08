@@ -33,7 +33,7 @@ function runQuery(req, res) {
 	let query = req.body;
 	return knex
 	// .distinct()
-	.select('nct_id','official_title','facility_id','city','state','zip')
+	.select('nct_id','official_title','facility_id','city','state','zip','country')
 	.from('aact_master')
 	.where(function() {
 		this
@@ -80,7 +80,7 @@ function runQuery(req, res) {
 	.andWhere(knex.raw("criteria_inc NOT ILIKE any ( :careSearch)", 
 			{careSearch: caregiverQueryInc(query.informant)}
 			))
-	.limit(10)
+	// .limit(10)
 	.then(rows => {
 		return getFacilityDistance(query.zipcode, rows)
 			.then((results) => {
