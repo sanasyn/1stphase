@@ -1,25 +1,44 @@
 import React from 'react';
 import Background from '../synapse.jpg';
+import Latin from '../latin.png';
 import FlatButton from 'material-ui/FlatButton';
-
-// import PropTypes from 'prop-types';
-// import ReactCSSTableRowansitionGroup from 'react-addons-css-TableRowansition-group';
+import { Link } from 'react-router-dom';
 
 export default () => {
+	const StyleButton = {
+		backgroundColor: "#174886",
+  	color: "#fff",
+  	fontSize: "2em",
+  	margin: "20px 10px",
+  	padding: "5px",
+  	height: "44px",
+	}
+
     return (
         // <div style={{backgroundImage: `url(${Background})`}}>
         <div>
-	        <div style={{ background: "#060d16",padding:"0px", textAlign:"center", borderBottomLeftRadius:"100px", position:"relative"}}>
-	        	<img src={Background} style={{width:"50%", display:"block", borderBottomLeftRadius:"100px"}}/>
-	        		<div style={{position:"absolute", top:"25px", right:"26px",maxWidth:"42%"}}>
-		        		<h1 style={{color:"white"}}>A Healing Connection</h1>
-		        		<p style={{color:"white", fontSize:"23px",}}>We connect you to clinical trials for Alzheimer's based on your needs.</p>
-		        		<FlatButton style={{backgroundColor: "#174886",fontSize:"2em", hoverColor: "#b63d34", marginTop:"20px", margin:"10px", color:'#fff', padding:"5px", height:"44px"}}>Get Started</FlatButton>
+	        <div className="topStyle">
+	        	<img className="synapseImage" src={Background}/>
+	        		<div className="containDiv">
+		        		<h1 className="healingConn">A Healing Connection</h1>
+		        		<p className="startInfo">We connect you to clinical trials for Alzheimer's based on your needs.</p>
+		        		<Link to="/quiz">
+		        			<FlatButton style={StyleButton}>Get Started
+		        			</FlatButton>
+		        		</Link>
 	        		</div>
 	        </div>
-	        <div style={{ background: "#060d16", height:"100px"}}>
-	        	<div style={{ background: "#d4d2d2",height:"100px", borderTopRightRadius:"100px"}}>
+	        <div className="underTopOut">
+	        	<div className="underTopIn">
+	        		<img className="latin" src={Latin}/>
 	        	</div>
+	        </div>
+	        <div className="underTopOut2">
+	        	<div className="underTopIn2"></div>
+	        </div>
+	        <div className="bottomStyle">
+	        		<div className="containDiv">
+	        		</div>
 	        </div>
 	    </div>
     )
