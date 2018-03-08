@@ -13,7 +13,7 @@ import {
 
 export default (results, stateCheck) => {
     return (
-        <Table>
+        <Table style={{maxWidth:"90%", margin:"auto"}}>
             <TableHeader displaySelectAll={false}>
                 <TableRow>
 

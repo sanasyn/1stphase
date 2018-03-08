@@ -29,20 +29,20 @@ const questionaire = [
         
         },
         {
-            question: 'Would your consent to genetic testing?',
+            question: 'Would you consent to genetic testing?',
             type: 'radio',
             options: ['Yes','No']
         }
         ]
     },
     {
-        question: 'Are you ok with having MRI done?',
+        question: 'Are you ok with having an MRI done?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:''
     },
     {
-        question: 'Are you okay with getting PET done for amyloid imaging?',
+        question: 'Are you okay with getting a PET scan for amyloid imaging?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:''
