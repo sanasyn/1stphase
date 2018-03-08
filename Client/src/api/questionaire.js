@@ -68,7 +68,7 @@ const questionaire = [
         followupQ:[
             {
                 parentAnswer:'',
-                question: 'Have you taking these medications for more than 10 weeks?',
+                question: 'Have you been taking these medications for more than 10 weeks?',
                 type:'radio',
                 options:['Yes','No']
             }
