@@ -31,7 +31,7 @@ function getDistance(source, facilities){
 function handleZipExceptions(facilities){
     const modifiedFacilities = facilities.map((facility) => {
         if ((facility.zip === '' || facility.zip.length !== 5) && facility.country === 'United States'){
-            facility.zip = zipcodes.lookupByName(facility.city, facility.state)[0].zip;
+            facility.zip = zipcodes.lookupByName(facility.city, facility.state).length > 1 ? zipcodes.lookupByName(facility.city, facility.state)[1].zip : zipcodes.lookupByName(facility.city, facility.state)[0].zip;
             return facility
         }
         else if (facility.zip === '' && facility.country === 'Canada'){
