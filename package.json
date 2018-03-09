@@ -22,6 +22,7 @@
     "express": "^4.16.2",
     "knex": "^0.14.2",
     "pg": "^7.4.1",
+    "react-router-dom": "^4.2.2",
     "zipcodes": "^6.0.0"
   }
 }
