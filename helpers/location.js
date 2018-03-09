@@ -19,7 +19,6 @@ function getConnectionOptions() {
 // Main function that invokes helper functions below
 function getDistance(source, facilities){
     return handleZipExceptions(facilities)
-        .then((modFacilities) => handleUndefined(modFacilities))
         .then((modFacilities) => getSourceZip(source, modFacilities))
         .then((obj) => facilityDistance(obj))
         .then((facility) => {
@@ -28,41 +27,14 @@ function getDistance(source, facilities){
         .catch((err) => console.log(err))
 }
 
-// Function to handle facilities that do not have zipcodes
-function handleZipExceptions(facilities){
-    const modifiedFacilities = facilities.map((facility) => {
-        if ((facility.zip === '' || facility.zip.length !== 5) && facility.country === 'United States'){
-            facility.zip = zipcodes.lookupByName(facility.city, facility.state).length > 1 ? 
-                zipcodes.lookupByName(facility.city, facility.state)[1].zip : 
-                zipcodes.lookupByName(facility.city, facility.state)[0].zip;
-            return facility
-        }
-        else if (facility.zip === '' && facility.country === 'Canada'){
-            return knex
-                .select('zipcode')
-                .from('zipcodes')
-                .where('city', 'like', '%'+facility.city+'%')
-                .andWhere('state', 'like', '%'+facility.state+'%')
-                .then((row) => {
-                    facility.zip = row[0].zipcode
-                    return facility
-                })
-                .catch((err) => console.log(err))
-        }
-        else return facility
-    })
-    return Promise.all(modifiedFacilities);
-}
-
-// Function to handle if zipcode returns undefined
-function handleUndefined(facilities) {
+function handleZipExceptions(facilities) {
     const modifiedFacilities = facilities.map((facility) => {
         const checkZip = zipcodes.lookup(facility.zip)
         if (typeof checkZip === 'undefined' && facility.country === 'United States') {
             facility.zip = zipcodes.lookupByName(facility.city, facility.state).length > 1 ? 
                 zipcodes.lookupByName(facility.city, facility.state)[1].zip : 
                 zipcodes.lookupByName(facility.city, facility.state)[0].zip;
-            return facility
+            return facility            
         }
         else if (typeof checkZip === 'undefined' && facility.country === 'Canada') {
             return knex
@@ -78,7 +50,7 @@ function handleUndefined(facilities) {
         }
         else return facility
     })
-    return Promise.all(modifiedFacilities)
+    return Promise.all(modifiedFacilities);
 }
 
 // Function to return lat and long using user's zipcode
