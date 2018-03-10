@@ -18,9 +18,9 @@ export default () => {
     return (
     	<div>
 
-    		<div className="topStyle">
-    			<Image className="synapseImage" circle src={Background}/>
-    			<div className="info">
+    		<div className="topStyle row">
+    			<Image className="col-md-6" circle src={Background}/>
+    			<div className="col-md-6">
 	    			<h1 className="healingConn">A Healing Connection</h1>
 	 		        <p className="startInfo">We connect you to clinical trials for Alzheimer's based on your needs.</p>
 	 		        <Link to="/quiz">

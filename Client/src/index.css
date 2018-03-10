@@ -31,8 +31,9 @@ body {
     padding: 0px;
     text-align: center;
     position: relative;
-    min-height: 300px;
     overflow: auto;
+    color:white;
+
 }
 
 .info {
@@ -51,51 +52,13 @@ body {
   display: block;
 }
 
-.containDiv {
-  position: absolute;
-  top: 25px;
-  right: 26px;
-  max-width: 42%;
-  color: white;
-}
-
 .startInfo {
   font-size:23px;
-}
-
-.underTopOut {
-  background: #060d16;
-  height: 150px;
-}
-
-.underTopIn {
-  background: #d4d2d2;
-  height: 320px;
-  border-top-right-radius: 100px;
-  text-align: center;
 }
 
 .latin {
   max-width: 50%;
   margin-top: 30px;
-}
-
-.bottomStyle {
-  height:320px;
-  background: #588b7f;
-  border-top-right-radius: 100px;
-}
-
-.underTopOut2 {
-  background: #588b7f;
-  height: 150px;
-}
-
-.underTopIn2 {
-  background: #d4d2d2;
-  height: 150px;
-  border-bottom-left-radius: 100px;
-  text-align: center;
 }
 
 /*quiz */
