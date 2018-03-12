@@ -12,6 +12,7 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 app.post("/query", match.runQuery);
+app.post("/resultDetails", require("./helpers/resultDetails"))
 
 
 app.listen(PORT, function() {
