@@ -21,6 +21,7 @@ class Result extends Component {
             clicked: false,
             notClicked: true,
             study: '',
+            contact: ''
         }
 
         this.onStudySelect=this.onStudySelect.bind(this)
@@ -31,8 +32,11 @@ class Result extends Component {
         this.setState({clicked: true, notClicked: false})
         axios.post("/resultDetails", study)
             .then((results) => {
-                console.log('STUDY DETAILS: ' + results.data[0])
-                this.setState({ study: results.data[0] })
+                console.log('STUDY DETAILS: ' + results.data)
+                this.setState({ 
+                    study: results.data.study[0],
+                    contact: results.data.contact[0]
+                })
             })
     }
 
@@ -66,7 +70,7 @@ class Result extends Component {
             )
 
         const detailPage = (
-            <ResultDetail study={this.state.study}/>
+            <ResultDetail study={this.state.study} contact={this.state.contact} />
         )
 
         return (

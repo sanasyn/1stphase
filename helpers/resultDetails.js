@@ -15,16 +15,11 @@ function getConnectionOptions() {
 }
 
 function getDetails(req, res){
-  console.log(req.body)
-  let study = req.body;
+  const study = req.body;
 
-  return knex
-    .select('nct_id','official_title','description','phase')
-    .from('aact_master')
-    .where('facility_id', '=', study.facility_id)
-    .then(row => {
-      res.send(row)
-    })
+  return getStudyInfo(study)
+    .then((data)=> getContactInfo(data, study))
+    .then((data) => res.send(data))
 }
 
 function getStudyInfo(study){
@@ -33,17 +28,20 @@ function getStudyInfo(study){
     .from('aact_master')
     .where('facility_id', '=', study.facility_id)
     .then(row => {
-      res.send(row)
+      return row
     })
 }
 
-function getContactInfo(study){
+function getContactInfo(data, study){
   return knex
     .select('facility_name','central_contact_name','central_contact_phone','central_contact_email','facility_contact_name','facility_contact_phone','facility_contact_email')
     .from('contact_info')
     .where('facility_id', '=', study.facility_id)
     .then(row => {
-      res.send(row)
+      return {
+        study: data,
+        contact: row
+      }
     })
 }
 
