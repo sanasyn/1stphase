@@ -24,7 +24,7 @@ function getDetails(req, res){
 
 function getStudyInfo(study){
   return knex
-    .select('nct_id','official_title','description','phase')
+    .select('nct_id','official_title','description','phase','city','state','zip')
     .from('aact_master')
     .where('facility_id', '=', study.facility_id)
     .then(row => {

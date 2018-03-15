@@ -41,10 +41,18 @@ class ResultDetail extends Component {
               <li>Phone: {this.props.contact.facility_contact_phone === null ? 'N/A' : this.props.contact.facility_contact_phone}</li>
             </p>
           </div>
-          <div className="col-md-5 detail-map">Map Section</div>
+          <div className="col-md-5 detail-map">
+          <iframe
+            width={"600"}
+            height={"450"}
+            frameborder={"0"}
+            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBCyRuFxxuSVcYNNDZmVWrBUJgHaoXhLJ0&q=${this.props.study.city},${this.props.study.state},${this.props.study.zip}`}>
+          </iframe>
+          </div>
         </div>
         
         <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}}  onClick={this.props.back}>Back</FlatButton>
+
       </div>
     )
   }

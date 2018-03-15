@@ -168,7 +168,7 @@ label.checkCustomLabel {
   float: right;
 }
 
-.detail-contact, .detail-map {
+.detail-contact {
   border: .2em solid black;
   height: 350px;
 }
