@@ -2,25 +2,6 @@ import React, { Component } from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
 class ResultDetail extends Component {
-  constructor(props){
-    super(props)
-
-    this.state = {
-      clicked: false,
-      notClicked: true
-    }
-
-    this.goBack=this.goBack.bind(this)
-  }
-
-  //TODO: Get back button to work
-  goBack(){
-    this.setState({
-      clicked: false,
-      notClicked: true
-    })
-  }
-
   render(){
     return (
       <div className="row detail-container">
@@ -63,7 +44,7 @@ class ResultDetail extends Component {
           <div className="col-md-5 detail-map">Map Section</div>
         </div>
         
-        <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}}  onClick={this.goBack}>Back</FlatButton>}
+        <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}}  onClick={this.props.back}>Back</FlatButton>
       </div>
     )
   }

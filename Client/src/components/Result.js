@@ -18,8 +18,8 @@ class Result extends Component {
         super(props)
 
         this.state = {
-            clicked: false,
-            notClicked: true,
+            showResults: true,
+            showDetails: false,
             study: '',
             contact: ''
         }
@@ -28,8 +28,8 @@ class Result extends Component {
     }
 
     onStudySelect(study) {
-        console.log("I'M BEING CLICKED!!! 🤓🤓🤓🤓🤓")
-        this.setState({clicked: true, notClicked: false})
+        // console.log("I'M BEING CLICKED!!! 🤓🤓🤓🤓🤓")
+        this.setState({showDetails: true, showResults: false})
         axios.post("/resultDetails", study)
             .then((results) => {
                 console.log('STUDY DETAILS: ' + results.data)
@@ -38,6 +38,14 @@ class Result extends Component {
                     contact: results.data.contact[0]
                 })
             })
+    }
+
+    goBack() {
+        console.log("GO BACK");
+        this.setState({
+            showDetails: false,
+            showResults:true,
+        })
     }
 
     render(){
@@ -70,13 +78,13 @@ class Result extends Component {
             )
 
         const detailPage = (
-            <ResultDetail study={this.state.study} contact={this.state.contact} />
+            <ResultDetail study={this.state.study} contact={this.state.contact} back={() => this.goBack()}/>
         )
 
         return (
             <div>
-                {this.state.notClicked ? resultTable : null }
-                {this.state.clicked ? detailPage : null }
+                {this.state.showResults ? resultTable : null }
+                {this.state.showDetails ? detailPage : null }
             </div>
         )
     } 
