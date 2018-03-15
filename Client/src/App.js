@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import LandingPage from './components/LandingPage';
 import Main from './components/Main';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import FlatButton from 'material-ui/FlatButton';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route} from 'react-router-dom';
 // import AnswerOption from './components/AnswerOption'
 
 class App extends Component {

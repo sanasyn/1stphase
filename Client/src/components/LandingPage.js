@@ -1,6 +1,6 @@
 import React from 'react';
 import Background from '../synapse.jpg';
-import Latin from '../latin.png';
+// import Latin from '../latin.png';
 import FlatButton from 'material-ui/FlatButton';
 import { Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
