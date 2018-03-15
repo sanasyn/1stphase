@@ -4,7 +4,6 @@ import Main from './components/Main';
 import Result from './components/Result';
 import ResultDetail from './components/ResultDetail';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import FlatButton from 'material-ui/FlatButton';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import AnswerOption from './components/AnswerOption'
 
