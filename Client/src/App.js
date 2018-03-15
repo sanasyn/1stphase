@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import LandingPage from './components/LandingPage';
 import Main from './components/Main';
+import Result from './components/Result';
+import ResultDetail from './components/ResultDetail';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import FlatButton from 'material-ui/FlatButton';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import AnswerOption from './components/AnswerOption'
 
 class App extends Component {
@@ -17,8 +18,12 @@ class App extends Component {
           {/* <img src="./SanaSynTitle.svg" alt="SanaSyn" alt="SanaSyn"/> */}
         </header>
         <div>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/quiz" component={Main} />
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/quiz" component={Main} />
+            <Route exact path="/result" component={Result} />
+            <Route exact path="/detail" component={ResultDetail} />
+          </Switch>
         </div>
 
         
@@ -29,7 +34,7 @@ class App extends Component {
 
         </MuiThemeProvider>
       </div>
-      </BrowserRouter>
+    </BrowserRouter>
     );
   }
 

@@ -3,7 +3,6 @@ import Quiz from './Quiz';
 import questionaire from '../api/questionaire';
 import update from 'react-addons-update';
 import Result from './Result';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FlatButton from 'material-ui/FlatButton';
 import axios from 'axios';
 // import AnswerOption from './components/AnswerOption'
