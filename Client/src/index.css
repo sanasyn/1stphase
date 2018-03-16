@@ -151,7 +151,7 @@ label.checkCustomLabel {
 }
 
 .detail-phase {
-  padding-top: 55px;
+  padding-top: 30px;
   font-size: 2.5em;
 }
 
@@ -165,12 +165,20 @@ label.checkCustomLabel {
 }
 
 .detail-map {
-  float: right;
+  padding-left: 2.5em;
 }
 
 .detail-contact {
   border: .2em solid black;
-  height: 350px;
+  height: 450px;
+}
+
+.detail-contact h5 {
+  text-align: center;
+}
+
+button.col-md-6.detail-back {
+  height: 100px;
 }
 
 /*.radioCustomButton{

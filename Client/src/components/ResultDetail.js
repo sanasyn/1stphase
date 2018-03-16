@@ -16,6 +16,7 @@ class ResultDetail extends Component {
 
         <div className="row detail-midsection">
           <div className="col-md-4 detail-phase">
+            <h5>Trial Phase</h5>
             {this.props.study.phase}
           </div>
           <div className="col-md-4 detail-eligibility">
@@ -29,29 +30,35 @@ class ResultDetail extends Component {
         </div>
 
         <div className="row detail-endsection">
-          <div className="col-md-5 detail-contact">Contact Section
-            <p>Central Contact
-              <li>Name: {this.props.contact.central_contact_name === null ? 'N/A' : this.props.contact.central_contact_name}</li>
-              <li>Email: {this.props.contact.central_contact_email === null ? 'N/A' : this.props.contact.central_contact_email}</li>
-              <li>Phone: {this.props.contact.central_contact_phone === null ? 'N/A' : this.props.contact.central_contact_phone}</li>
-            </p>
+          <div className="col-md-5 detail-contact">
+            <h5>Contact Information</h5>
             <p>Facility Contact
               <li>Name: {this.props.contact.facility_contact_name === null ? 'N/A' : this.props.contact.facility_contact_name}</li>
               <li>Email: {this.props.contact.facility_contact_email === null ? 'N/A' : this.props.contact.facility_contact_email}</li>
               <li>Phone: {this.props.contact.facility_contact_phone === null ? 'N/A' : this.props.contact.facility_contact_phone}</li>
             </p>
+            <p>Central Contact
+              <li>Name: {this.props.contact.central_contact_name === null ? 'N/A' : this.props.contact.central_contact_name}</li>
+              <li>Email: {this.props.contact.central_contact_email === null ? 'N/A' : this.props.contact.central_contact_email}</li>
+              <li>Phone: {this.props.contact.central_contact_phone === null ? 'N/A' : this.props.contact.central_contact_phone}</li>
+            </p>
           </div>
-          <div className="col-md-5 detail-map">
+          <div className="col-md-7 detail-map">
           <iframe
+            title={"result-map"}
             width={"600"}
             height={"450"}
-            frameborder={"0"}
-            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBCyRuFxxuSVcYNNDZmVWrBUJgHaoXhLJ0&q=${this.props.study.city},${this.props.study.state},${this.props.study.zip}`}>
+            frameBorder={"0"}
+            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBCyRuFxxuSVcYNNDZmVWrBUJgHaoXhLJ0&q=${this.props.study.city},${this.props.study.state},${this.props.study.zip}`}
+          >
           </iframe>
           </div>
         </div>
         
-        <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}}  onClick={this.props.back}>Back</FlatButton>
+        <div className="row detail-back-row">
+          <div className="col-md-3"></div>
+          <FlatButton className="col-md-6 detail-back" style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}} onClick={this.props.back}>Back</FlatButton>
+        </div>
 
       </div>
     )
