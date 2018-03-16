@@ -4,6 +4,7 @@ import questionaire from '../api/questionaire';
 import update from 'react-addons-update';
 import Result from './Result';
 import FlatButton from 'material-ui/FlatButton';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 import axios from 'axios';
 // import AnswerOption from './components/AnswerOption'
 
@@ -44,6 +45,7 @@ class Main extends Component {
       inputError:true,
       results:[],
       start:false,
+      loading:false,
     }
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
@@ -53,7 +55,7 @@ class Main extends Component {
     this.validateInputValue=this.validateInputValue.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.renderResult=this.renderResult.bind(this);
-    // this.renderLanding=this.renderLanding.bind(this);
+    this.renderLoading=this.renderLoading.bind(this);
 
   }
 
@@ -114,18 +116,24 @@ class Main extends Component {
 
   getMatchResult()
   {
+    this.setState({
+      loading:true
+    })
     console.log("getMatchResult");
     console.log("answer: ", this.state.answer);
     axios.post('./query', this.state.answer)
             .then((results) => {
               console.log("results: ", results.data);
               this.setState({
-                results: results.data
+                results: results.data,
+                loading:false
               })
             })
             .catch(error => {
               console.log("ERROR", error)
             });
+
+
   }
 
   //this function will set the answer for the current question and check for any follwo up question and display follow up questions.
@@ -531,6 +539,8 @@ handleClickBack() {
     .catch(error => {
       console.log("ERROR", error)
     })
+
+
   }
 
 
@@ -594,6 +604,15 @@ handleClickBack() {
       );
   }
 
+  renderLoading() {
+    return (
+          <RefreshIndicator
+            size={100}
+            status="loading"
+            style={{ zIndex:"100" }}
+          />
+      );
+  }
 
 
   renderResult() {
@@ -607,7 +626,7 @@ handleClickBack() {
   render() {
     return (
       <div style={{marginTop:"30px"}}>
-      { this.state.results.length ? this.renderResult() : this.renderQuiz()}
+      { this.state.loading ? this.renderLoading() :this.state.results.length ? this.renderResult() :  this.renderQuiz()}
       </div>
     );
   }
