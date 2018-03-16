@@ -19,7 +19,7 @@ export default () => {
     	<div>
     		<div className="topStyle row">
     			<Image className="col-md-6" circle src={Background}/>
-    			<div className="col-md-4 col-md-offset-1" >
+    			<div className="col-md-4 col-md-offset-1 info" >
 	    			<h1 className="healingConn">A Healing Connection</h1>
 	 		        <p className="startInfo">We connect you to clinical trials for Alzheimer's Disease based on your needs.</p>
 	 		        <Link to="/quiz">
