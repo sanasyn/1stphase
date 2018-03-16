@@ -33,6 +33,7 @@ body {
     position: relative;
     overflow: auto;
     color:white;
+    margin: 0px;
 
 }
 
@@ -57,9 +58,48 @@ body {
 }
 
 .latin {
-  max-width: 50%;
-  margin-top: 30px;
+  overflow:auto;
+  padding:35px;
+  background:white;
 }
+
+.latinImage {
+  max-width: 600px;
+}
+
+.stepContainer {
+  padding-top: 30px;
+  text-align: center;
+}
+
+.step {
+  margin: 32px;
+  background: #334f54;
+  border-radius: 22px;
+  text-align: center;
+  padding:12px;
+}
+
+h2.stepNumber {
+  height: 100px;
+  width: 100px;
+  background-color: #56a7a0;
+  border-radius: 50%;
+  line-height: 100px;
+  color: white;
+  font-size: 40px;
+  margin: 10px;
+  display: inline-block;
+  border: white solid 2px;
+}
+
+p.stepDesc {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 10px;
+    color: white;
+}
+
 
 /*quiz */
  .quiz {
