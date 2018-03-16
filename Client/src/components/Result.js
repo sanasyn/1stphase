@@ -28,11 +28,9 @@ class Result extends Component {
     }
 
     onStudySelect(study) {
-        // console.log("I'M BEING CLICKED!!! 🤓🤓🤓🤓🤓")
         this.setState({showDetails: true, showResults: false})
         axios.post("/resultDetails", study)
             .then((results) => {
-                console.log('STUDY DETAILS: ' + results.data)
                 this.setState({ 
                     study: results.data.study[0],
                     contact: results.data.contact[0]
@@ -41,7 +39,6 @@ class Result extends Component {
     }
 
     goBack() {
-        console.log("GO BACK");
         this.setState({
             showDetails: false,
             showResults:true,
