@@ -4,6 +4,7 @@ import questionaire from '../api/questionaire';
 import update from 'react-addons-update';
 import Result from './Result';
 import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import axios from 'axios';
 // import AnswerOption from './components/AnswerOption'
 
@@ -43,7 +44,7 @@ class Main extends Component {
       },
       inputError:true,
       results:[],
-      start:false,
+      end:false,
     }
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
@@ -53,6 +54,7 @@ class Main extends Component {
     this.validateInputValue=this.validateInputValue.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.renderResult=this.renderResult.bind(this);
+    this.renderWaitProgress=this.renderWaitProgress.bind(this);
     // this.renderLanding=this.renderLanding.bind(this);
 
   }
@@ -359,8 +361,10 @@ handleClickBack() {
         console.log("store currAnswer into the asnwer object");
         console.log("currAnswer: ", this.state.currAnswer);
         console.log("updateAnswer: ", updateAnswer);
+        console.log("END OF QUESTIONS 🎉")
         this.setState({
           answer:updateAnswer,
+          end: true
         });
 
         
@@ -599,15 +603,24 @@ handleClickBack() {
   renderResult() {
     return (
       <Result results={this.state.results}/>
-      // <h2>Result display here</h2>
     );
   }
 
+  renderWaitProgress() {
+    return (
+      <div className="row">
+        <div className="col-md-5"></div>
+        <CircularProgress className="progress-circle" size={300} thickness={20} color={"#4A148C"} />
+      </div>
+    )
+  }
 
   render() {
     return (
       <div style={{marginTop:"30px"}}>
-      { this.state.results.length ? this.renderResult() : this.renderQuiz()}
+      { this.state.end && this.state.results.length === 0 ? this.renderWaitProgress() 
+        : this.state.results.length ? this.renderResult() 
+        : this.renderQuiz()}
       </div>
     );
   }
