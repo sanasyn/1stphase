@@ -157,6 +157,63 @@ label.checkCustomLabel {
   width: 14px;
     height: 24px;
 }
+
+/* Result Details */
+.detail-container {
+  width: 75%
+}
+
+.detail-title {
+  font-size: 2.8em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.detail-description {
+  border: .2em solid black;
+  border-radius: 30px;
+}
+
+.detail-description.p {
+  font-size: 1.5em;
+}
+
+.detail-phase, .detail-eligibility, .detail-studylink {
+  height: 150px;
+  text-align: center;
+}
+
+.detail-phase {
+  padding-top: 30px;
+  font-size: 2.5em;
+}
+
+.detail-studylink {
+  padding-top: 35px;
+  font-size: 2.0em;
+}
+
+.row.detail-endsection {
+  width: 90%;
+}
+
+.detail-map {
+  padding-left: 2.5em;
+}
+
+.detail-contact {
+  border: .2em solid black;
+  height: 450px;
+}
+
+.detail-contact h5 {
+  text-align: center;
+}
+
+button.col-md-6.detail-back {
+  height: 100px;
+}
+
 /*.radioCustomButton{
   position:absolute;
   width:auto;
