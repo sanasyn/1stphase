@@ -16,8 +16,12 @@ export default (results, stateCheck) => {
         <Table>
             <TableHeader displaySelectAll={false}>
                 <TableRow>
+                    <TableHeaderColumn>Row Number</TableHeaderColumn>
                     <TableHeaderColumn>NCT_ID</TableHeaderColumn>
                     <TableHeaderColumn>Title</TableHeaderColumn>
+                    <TableHeaderColumn>City State</TableHeaderColumn>
+                    <TableHeaderColumn>Zipcode</TableHeaderColumn>
+
                 </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
@@ -27,7 +31,7 @@ export default (results, stateCheck) => {
                             <TableRowColumn>{i}</TableRowColumn>
                             <TableRowColumn>{study.nct_id}</TableRowColumn>
                             <TableRowColumn>{study.official_title}</TableRowColumn>
-                            <TableRowColumn>{study.city},{study.state}</TableRowColumn>
+                            <TableRowColumn>{study.city}, {study.state}</TableRowColumn>
                             <TableRowColumn>{study.zip}</TableRowColumn>
                         </TableRow>
                     )
