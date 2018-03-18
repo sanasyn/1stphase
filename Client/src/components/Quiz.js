@@ -4,10 +4,11 @@
 
 import React from 'react';
 import Question from '../components/Question';
-import QuestionCount from '../components/QuestionCount';
+// import QuestionCount from '../components/QuestionCount';
 import AnswerInput from '../components/AnswerInput';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // import AnswerOption from '../components/AnswerOption'
 
@@ -17,7 +18,7 @@ function Quiz(props){
     
     return (
         <ReactCSSTransitionGroup
-            className="container"
+            className="quiz"
             component="div"
             transitionName="fade"
             transitionEnterTimeout={800}
@@ -26,10 +27,14 @@ function Quiz(props){
             transitionAppearTimeout={500}
         >
             <div className="quiz">
-                <QuestionCount
+
+                <LinearProgress mode="determinate" min={0} max={11} color="#d40027" style={{height: "7px", marginBottom: "25px"}} value={props.counter} />
+
+               
+               {/* <QuestionCount
                     counter={props.questionId}
                     total={props.questionTotal}
-                />
+                /> */ }
 
                 <Question content={props.question}/>
                 

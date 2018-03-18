@@ -2,14 +2,22 @@
   box-sizing: border-box;
 }
 
+h1 {
+  font-size: 3.0em;
+}
+
 body {
   margin: 0;
   padding: 0;
-  background: rgb(238, 238, 238);
+  background: #d4d2d2;
   font-family: sans-serif;
 }
 
 .container {
+  width:100%;
+}
+
+.quiz {
   position: relative;
   max-width: 800px;
   margin: 0 auto;
@@ -17,6 +25,74 @@ body {
   border-radius: 3px;
 
 }
+/*Landing Page*/
+.topStyle {
+    background: #060d16;
+    padding: 0px;
+    text-align: center;
+    position: relative;
+    overflow: auto;
+    color:white;
+    margin: 0px;
+
+}
+
+.info {
+  margin-top: 20px;
+}
+
+.synapseImage {
+  width: 45%;
+  display: block;
+}
+
+.startInfo {
+  font-size:23px;
+}
+
+.latin {
+  overflow:auto;
+  padding:35px;
+  background:white;
+}
+
+.latinImage {
+  max-width: 600px;
+}
+
+.stepContainer {
+  padding-top: 30px;
+  text-align: center;
+}
+
+.step {
+  margin: 32px;
+  background: #334f54;
+  border-radius: 22px;
+  text-align: center;
+  padding:12px;
+}
+
+h2.stepNumber {
+  height: 100px;
+  width: 100px;
+  background-color: #56a7a0;
+  border-radius: 50%;
+  line-height: 100px;
+  color: white;
+  font-size: 40px;
+  margin: 10px;
+  display: inline-block;
+  border: white solid 2px;
+}
+
+p.stepDesc {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 10px;
+    color: white;
+}
+
 
 /*quiz */
  .quiz {
@@ -25,17 +101,19 @@ body {
   padding: 30px;
 } 
  
+
+ /*Result*/
 .result {
   padding: 1.5rem 2.5rem;
   text-align: center;
 }
 
 /*question count */
-.questionCnt
+/*.questionCnt
 {                     
   padding: 0.5rem 2.8rem;
   font-size: 0.8rem;
-}
+}*/
 
 /*question */
 .question {
@@ -50,16 +128,93 @@ body {
   padding: 0;
   list-style:none;
 }
-.answerOption{
-  border-top:1px solid #eee;
-
-}
 
 .answerOption:hover{
   background-color:#eefbfe;
 }
 
-.radioCustomButton{
+[type="radio"]:not(:checked)+label, [type="radio"]:checked+label {
+  font-size: 2em;
+  margin:12px;
+}
+[type="radio"]+label:before, [type="radio"]+label:after {
+  width:20px;
+  height:20px;
+}
+
+input[type="text"] {
+    font-size: 2em;
+    text-align: center;
+    color: #797979;
+}
+
+label.checkCustomLabel {
+    font-size: 2em;
+    margin: 10px;
+}
+
+[type="checkbox"]:checked+label:before {
+  width: 14px;
+    height: 24px;
+}
+
+/* Result Details */
+.detail-container {
+  width: 75%
+}
+
+.detail-title {
+  font-size: 2.8em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.detail-description {
+  border: .2em solid black;
+  border-radius: 30px;
+}
+
+.detail-description.p {
+  font-size: 1.5em;
+}
+
+.detail-phase, .detail-eligibility, .detail-studylink {
+  height: 150px;
+  text-align: center;
+}
+
+.detail-phase {
+  padding-top: 30px;
+  font-size: 2.5em;
+}
+
+.detail-studylink {
+  padding-top: 35px;
+  font-size: 2.0em;
+}
+
+.row.detail-endsection {
+  width: 90%;
+}
+
+.detail-map {
+  padding-left: 2.5em;
+}
+
+.detail-contact {
+  border: .2em solid black;
+  height: 450px;
+}
+
+.detail-contact h5 {
+  text-align: center;
+}
+
+button.col-md-6.detail-back {
+  height: 100px;
+}
+
+/*.radioCustomButton{
   position:absolute;
   width:auto;
   opacity:0;
@@ -78,9 +233,9 @@ body {
   padding: 1.5rem 2.5rem 1.5rem 5rem;
   font-size: 1rem;
   line-height: 1.5;
-}
+}*/
 
-.radioCustomButton ~ .radioCustomLabel:before{
+/*.radioCustomButton ~ .radioCustomLabel:before{
   position: absolute;
   top:20px;
   left:38px;
@@ -101,7 +256,7 @@ body {
   background-size: 27px;
   border-color:#8BC53F;
 }
-
+*/
 
 
 /*animation*/
