@@ -116,9 +116,6 @@ class Main extends Component {
 
   getMatchResult()
   {
-    this.setState({
-      loading:true
-    })
     console.log("getMatchResult");
     console.log("answer: ", this.state.answer);
     axios.post('./query', this.state.answer)
@@ -369,6 +366,7 @@ handleClickBack() {
         console.log("updateAnswer: ", updateAnswer);
         this.setState({
           answer:updateAnswer,
+          loading:true
         });
 
         
@@ -607,8 +605,10 @@ handleClickBack() {
   renderLoading() {
     return (
           <RefreshIndicator
-            size={100}
+            size={200}
             status="loading"
+            top={150}
+            left={490}
             style={{ zIndex:"100" }}
           />
       );
