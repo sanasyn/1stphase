@@ -163,18 +163,23 @@ label.checkCustomLabel {
   width: 75%
 }
 
-.detail-title {
+.detail-topsection {
+  margin-bottom: 20px;
+}
+
+.detail-study-title {
   font-size: 2.8em;
   text-align: center;
   font-weight: bold;
 }
 
 .detail-description {
-  border: .2em solid black;
-  border-radius: 30px;
+  border-top: .2em solid black;
 }
 
-.detail-description.p {
+.detail-title {
+  text-align: center;
+  font-weight: bold;
   font-size: 1.5em;
 }
 
@@ -183,9 +188,9 @@ label.checkCustomLabel {
   text-align: center;
 }
 
-.detail-phase {
-  padding-top: 30px;
+.detail-study-phase {
   font-size: 2.5em;
+  text-align: center;
 }
 
 .detail-studylink {
@@ -193,21 +198,13 @@ label.checkCustomLabel {
   font-size: 2.0em;
 }
 
-.row.detail-endsection {
-  width: 90%;
-}
-
-.detail-map {
-  padding-left: 2.5em;
-}
-
 .detail-contact {
-  border: .2em solid black;
   height: 450px;
 }
 
-.detail-contact h5 {
-  text-align: center;
+div.col-md-6.detail-map {
+  padding-right: 0;
+  padding-left: 0;
 }
 
 button.col-md-6.detail-back {
