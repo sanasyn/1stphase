@@ -210,7 +210,7 @@ handleClickBack() {
   })
 }
   //when next button is clicked, set up the next question to be displayed
- handleClickNext() {
+handleClickNext() {
    //counter for current question
     const counter = this.state.counter;
     var updateAnswer=this.state.answer;
@@ -506,7 +506,8 @@ handleClickBack() {
     }
   }
 
-  handleSubmit() {
+handleSubmit() 
+{
     console.log("SUBMIT");
     // let objectQuery = {
     //   zipcode: this.state.answer.zipcode,
@@ -547,7 +548,7 @@ handleClickBack() {
   //
   //return true when the value is not valid
   //return false when the value is valid
-  validateInputValue(currAnswer) {
+validateInputValue(currAnswer) {
     const counter = this.state.counter;
 
     switch(counter) {
@@ -576,7 +577,7 @@ handleClickBack() {
   //     );
   // }
 
-  renderQuiz() {
+renderQuiz() {
     return (
       <Quiz
         currAnswer={this.state.currAnswer}
@@ -596,7 +597,7 @@ handleClickBack() {
     );
   }
 
-  renderSubmit() {
+renderSubmit() {
     return (
         <FlatButton style={{backgroundColor: "#6ab6c5", hoverColor: "#b8e2ea", marginTop:"20px"}}  onClick={this.handleSubmit}>Submit</FlatButton>
       );
@@ -623,7 +624,7 @@ handleClickBack() {
   }
 
 
-  render() {
+render() {
     return (
       <div style={{marginTop:"30px"}}>
       { this.state.loading ? this.renderLoading() :this.state.results.length ? this.renderResult() :  this.renderQuiz()}

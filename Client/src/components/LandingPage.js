@@ -28,9 +28,6 @@ export default () => {
  		        		</Link>
 	 		    </div>
     		</div>
-        <div className="latin">
-          < Image className="col-md-offset-3 col-md-6 latinImage" src={Latin}/>
-        </div>
         <div className="stepContainer col-md-offset-3 col-md-6">
           <div className="step">
             <h2 className="stepNumber">1</h2>
