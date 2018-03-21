@@ -55,7 +55,7 @@ class ResultDetail extends Component {
                 width={"600"}
                 height={"450"}
                 frameBorder={"0"}
-                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBCyRuFxxuSVcYNNDZmVWrBUJgHaoXhLJ0&q=${this.props.study.city},${this.props.study.state},${this.props.study.zip}`}
+                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBCyRuFxxuSVcYNNDZmVWrBUJgHaoXhLJ0&q=${this.props.contact.facility_name},${this.props.study.zip}`}
               >
               </iframe>
           </CardMedia>

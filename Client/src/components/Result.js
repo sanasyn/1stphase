@@ -28,6 +28,7 @@ class Result extends Component {
     }
 
     onStudySelect(study) {
+        console.log("in on Study Select",study);
         this.setState({showDetails: true, showResults: false})
         axios.post("/resultDetails", study)
             .then((results) => {
