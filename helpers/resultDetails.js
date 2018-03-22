@@ -28,6 +28,7 @@ function getStudyInfo(study){
     .from('aact_master')
     .where('facility_id', '=', study.facility_id)
     .then(row => {
+      console.log("getStudyInfo ", row);
       return row
     })
 }

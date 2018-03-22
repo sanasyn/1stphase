@@ -365,8 +365,7 @@ handleClickNext() {
         console.log("currAnswer: ", this.state.currAnswer);
         console.log("updateAnswer: ", updateAnswer);
         this.setState({
-          answer:updateAnswer,
-          loading:true
+          answer:updateAnswer
         });
 
         
@@ -417,6 +416,9 @@ handleClickNext() {
         }else
         {
           //last of the last question, send answer object
+          this.setState({
+            loading:true
+          });
          setTimeout(()=> this.getMatchResult(),300);
 
         }
@@ -475,6 +477,9 @@ handleClickNext() {
                   }
                   else{
                     //in the last question so send answer object
+                    this.setState({
+                      loading:true
+                    });
                     setTimeout(()=> this.getMatchResult(),300);
                   }
               break;
@@ -499,6 +504,9 @@ handleClickNext() {
           //reach to end of the question that does not have follow up question. send the answer back and diplay result
           
           console.log("action: send the input to matching and display results")
+          this.setState({
+            loading:true
+          });
           setTimeout(()=> this.getMatchResult(),300);
             
         }

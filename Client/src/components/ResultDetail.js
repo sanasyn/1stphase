@@ -3,9 +3,28 @@ import FlatButton from 'material-ui/FlatButton';
 import {Card, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class ResultDetail extends Component {
+  state = {
+    elg_info_open: false,
+  };
+
+  handleToggle = () => {
+    const currStat=this.state.elg_info_open;
+    this.setState({elg_info_open: !currStat});
+  };
+
   render(){
+    const actions = [
+      <FlatButton
+        label="Ok"
+        primary={true}
+        onClick={this.handleToggle}
+      />
+    ];
+
     return (
       <div className="row detail-container">
         <Card className="col-md-12 detail-topsection">
@@ -20,6 +39,17 @@ class ResultDetail extends Component {
           </Card>
           <Card className="col-md-4 detail-eligibility">
             <CardTitle className="detail-title">Eligibility Section</CardTitle>
+            <div>
+              <RaisedButton label="Eligibility Info" onClick={this.handleOpen} />
+              <Dialog
+                title="Eligibility Information"
+                actions={actions}
+                modal={true}
+                open={this.state.elg_info_open}
+              >
+                The actions in this window were passed in as an array of React objects.
+              </Dialog>
+            </div>
           </Card>
           <Card className="col-md-4 detail-studylink">
             <a target="_blank" href={`https://clinicaltrials.gov/ct2/show/${this.props.study.nct_id}`}>
