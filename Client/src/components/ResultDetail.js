@@ -5,18 +5,27 @@ import {List, ListItem} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 class ResultDetail extends Component {
   state = {
     elg_info_open: false,
+    tab_value:'include'
   };
 
   handleToggle = () => {
     const currStat=this.state.elg_info_open;
     this.setState({elg_info_open: !currStat});
   };
+  handleTabChange = (value) => {
+    this.setState({
+      tab_value: value,
+    });
+  };
 
   render(){
+    var inclusion = this.props.study.criteria_inc;
+    var exclusion = this.props.study.criteria_ex;
     const actions = [
       <FlatButton
         label="Ok"
@@ -24,6 +33,7 @@ class ResultDetail extends Component {
         onClick={this.handleToggle}
       />
     ];
+    const reactStringReplace = require('react-string-replace');
 
     return (
       <div className="row detail-container">
@@ -38,16 +48,36 @@ class ResultDetail extends Component {
             <CardText className="detail-study-phase" style={{fontSize: '2.5em'}}>{this.props.study.phase}</CardText>
           </Card>
           <Card className="col-md-4 detail-eligibility">
-            <CardTitle className="detail-title">Eligibility Section</CardTitle>
             <div>
-              <RaisedButton label="Eligibility Info" onClick={this.handleOpen} />
+              <RaisedButton label="Eligibility Info" onClick={this.handleToggle} />
               <Dialog
                 title="Eligibility Information"
                 actions={actions}
                 modal={true}
                 open={this.state.elg_info_open}
+                autoScrollBodyContent={true}
+                contentStyle={{height:'70%'}}
               >
-                The actions in this window were passed in as an array of React objects.
+                <Tabs
+                  value={this.state.tab_value}
+                  onChange={this.handleTabChange}
+                >
+                  <Tab label="Inclusion Criteria" value="include">
+                    <div>
+                      <p>
+                       {this.props.study.criteria_inc}
+                      </p>
+                    </div>
+                  </Tab>
+                  <Tab label="Exclusion Criteria" value="exclusion">
+                    <div>
+                      <p>
+                      {this.props.study.criteria_ex}
+                      </p>
+                    </div>
+                  </Tab>
+                </Tabs>
+
               </Dialog>
             </div>
           </Card>
