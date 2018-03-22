@@ -13,7 +13,7 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 app.post("/query", match.runQuery);
 app.post("/resultDetails", require("./helpers/resultDetails"))
-
+app.post("/useReason", require("./helpers/useReason"))
 
 app.listen(PORT, function() {
    console.log("App listening on PORT " + PORT);

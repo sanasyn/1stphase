@@ -56,7 +56,7 @@ class Main extends Component {
     this.handleSubmit=this.handleSubmit.bind(this);
     this.renderResult=this.renderResult.bind(this);
     this.renderLoading=this.renderLoading.bind(this);
-
+    this.postUseReason=this.postUseReason.bind(this);
   }
 
   componentWillMount() {
@@ -129,8 +129,11 @@ class Main extends Component {
             .catch(error => {
               console.log("ERROR", error)
             });
+  }
 
-
+  postUseReason() {
+    axios.post('./useReason', this.state.answer.opinion)
+      .then((val) => console.log(val.data))
   }
 
   //this function will set the answer for the current question and check for any follwo up question and display follow up questions.
@@ -420,7 +423,7 @@ handleClickNext() {
             loading:true
           });
          setTimeout(()=> this.getMatchResult(),300);
-
+         setTimeout(()=> this.postUseReason(),400);
         }
       }
 
@@ -481,6 +484,7 @@ handleClickNext() {
                       loading:true
                     });
                     setTimeout(()=> this.getMatchResult(),300);
+                    setTimeout(()=> this.postUseReason(),400);
                   }
               break;
 
