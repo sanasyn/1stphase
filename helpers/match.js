@@ -29,6 +29,8 @@ function getConnectionOptions() {
 }
 
 function runQuery(req, res) {
+	const page = req.query.page || 0;
+	const limit = req.query.limit || 50;
 	console.log("BODY: ", req.body);
 	let query = req.body;
 	return knex
@@ -83,6 +85,7 @@ function runQuery(req, res) {
 	// .limit(10)
 	.then(rows => {
 		return getFacilityDistance(query.zipcode, rows)
+			.limit(2)
 			.then((results) => {
 				console.log(results)
 				res.send(results)

@@ -10,7 +10,6 @@ function Question(props){
     );
 }
 
-
 Question.propTypes ={
     content: PropTypes.string.isRequired
 };

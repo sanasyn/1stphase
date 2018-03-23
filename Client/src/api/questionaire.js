@@ -36,7 +36,7 @@ const questionaire = [
         ]
     },
     {
-        question: 'Are you ok with having an MRI done?',
+        question: 'Are you okay with having an MRI done?',
         type:'radio',
         options:[ 'Yes','No'],
         followupQ:''
