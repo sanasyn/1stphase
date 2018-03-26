@@ -24,8 +24,6 @@ class ResultDetail extends Component {
   };
 
   render(){
-    var inclusion = this.props.study.criteria_inc;
-    var exclusion = this.props.study.criteria_ex;
     const actions = [
       <FlatButton
         label="Ok"
@@ -33,7 +31,6 @@ class ResultDetail extends Component {
         onClick={this.handleToggle}
       />
     ];
-    const reactStringReplace = require('react-string-replace');
 
     return (
       <div className="row detail-container">

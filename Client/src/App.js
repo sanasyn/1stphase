@@ -1,44 +1,27 @@
 import React, { Component } from 'react';
 import LandingPage from './components/LandingPage';
 import Main from './components/Main';
-import Result from './components/Result';
-import ResultDetail from './components/ResultDetail';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Image } from 'react-bootstrap';
 import headerImage from './SanaTitle_b.svg';
-// import AnswerOption from './components/AnswerOption'
 
 class App extends Component {
   render() {
     return (
     <BrowserRouter>
       <div>
-      <MuiThemeProvider>
-      <header style={{marginTop: "0", backgroundColor: "#20759c",minHeight:'255',borderTop: "solid #545454 8px", }}>
-          {/* <h1 style={{marginTop: "0", padding: "6px", color: "#fff", fontFamily:"Acme", fontSize: "3.0em", marginBottom:"0px"}}><span style={{fontFamily: "Arial", letterSpacing: "-6px", fontSize: "0.7em", paddingRight: "14px", fontStyle: "italic", color: "#CCC515"}}>S&#423;</span></h1> */}
-          {/* <img src="./SanaSynTitle.svg" alt="SanaSyn" alt="SanaSyn"/> */}
-          
-          <span style={{fontFamily: "Arial", letterSpacing: "-6px", fontSize: "2.7em", paddingRight: "14px", fontStyle: "italic", color: "#CCC515"}}>S&#423;</span>
-          < Image src={headerImage}/>
-          
-
-        </header>
-        <div>
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route exact path="/quiz" component={Main} />
-            <Route exact path="/result" component={Result} />
-            <Route exact path="/detail" component={ResultDetail} />
-          </Switch>
-        </div>
-
-        
-        
-    {/* { this.state.results.length? this.renderResult() :
-      this.state.answer.opinion.list.length ? this.renderSubmit() : 
-      this.renderQuiz()} */}
-
+        <MuiThemeProvider>
+          <header className='header'>
+              <span className='logo'>S&#423;</span>
+              < Image src={headerImage}/>
+          </header>
+          <div>
+            <Switch>
+              <Route exact path="/" component={LandingPage} />
+              <Route exact path="/quiz" component={Main} />
+            </Switch>
+          </div>
         </MuiThemeProvider>
       </div>
     </BrowserRouter>
