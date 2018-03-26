@@ -11,8 +11,6 @@ const strokeQuery = require('./translate').strokeQuery;
 const medicationsQuery = require('./translate').medicationsQuery;
 const medicationsQueryNot = require('./translate').medicationsQueryNot;
 const caregiverQueryInc = require('./translate').caregiverQueryInc;
-// const query = require('./exampleObjects').complete;
-
 const getFacilityDistance = require('./location');
 
 function getConnectionOptions() {
@@ -34,6 +32,7 @@ function runQuery(req, res) {
 	return knex
 	// .distinct()
 	.select('nct_id','official_title','facility_id','city','state','zip','country')
+	// .count()
 	.from('aact_master')
 	.where(function() {
 		this
@@ -57,7 +56,7 @@ function runQuery(req, res) {
 			{search: geneticQueryInc(query.geneticTesting)}
 			))
 	// // GOOD
-	.andWhere(knex.raw("criteria_ex NOT ILIKE :mriSearch", 
+	.andWhere(knex.raw("criteria_ex NOT ILIKE any ( :mriSearch)", 
 			{mriSearch: mriQuery(query.mri)}
 			))
 	// // GOOD
@@ -84,15 +83,10 @@ function runQuery(req, res) {
 	.then(rows => {
 		return getFacilityDistance(query.zipcode, rows)
 			.then((results) => {
-				console.log(results)
+				// console.log(results)
 				res.send(results)
 			})
 	})
-	// .then((rows) => {
-	// 	console.log(rows)
-	// 	res.send(rows)
-
-	// })
 	.catch((error) => {
 		res.send(new Error('Error querying database. ', error));
 	});

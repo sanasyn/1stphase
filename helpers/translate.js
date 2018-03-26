@@ -22,9 +22,9 @@ function geneticQueryEx(genetic) {
 
 // creates mri query for exclusion criteria
 function mriQuery(mri) {
-	let queryMri = '';
+	let queryMri = [''];
 	if (mri === 'no') {
-		queryMri = '%contraindication%MR%';
+		queryMri = ['%contraindication%MR%'];
 	}
 	console.log("MRI: ", queryMri);
 	return queryMri;
