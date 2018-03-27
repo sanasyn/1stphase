@@ -16,6 +16,8 @@ app.post("/query", match.runQuery);
 app.post("/resultDetails", require("./helpers/resultDetails"))
 app.post("/useReason", require("./helpers/useReason"))
 
+app.use(express.static(path.resolve(__dirname, './Client/public')));
+
 app.get('*', function(request, response) {
    response.sendFile(path.resolve(__dirname, './Client/public', 'index.html'));
  });
