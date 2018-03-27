@@ -99,13 +99,16 @@ class Result extends Component {
           <div className="resultsPage">
             {this.state.showResults ? resultTable : null }
             {this.state.showDetails ? detailPage : null }
-            <div className="pagenation" style={{textAlign: "center"}}>
-              {this.state.currentPage > 1 ? (
-                  <FlatButton onClick={() => {this.previousPageNumber()}}><i className="glyphicon glyphicon-triangle-left" /></FlatButton>
-                ): null}
-              <div className="currentPage" style={{display:"inline-block", fontWeight:"bold", fontSize:"25px", position:"absolute", left: "49.5%"}}>{this.state.currentPage}</div>
-              <FlatButton onClick={() => {this.nextPageNumber()}}><i className="glyphicon glyphicon-triangle-right" /></FlatButton>
+
+            {this.state.showResults ? (
+                <div className="pagenation" style={{textAlign: "center"}}>
+              {this.state.currentPage <= 1 ? (
+                  <FlatButton style={{visibility:'hidden'}}><i className="glyphicon glyphicon-triangle-left" /></FlatButton>
+                ): <FlatButton style={{visibility:'visible'}} onClick={() => {this.previousPageNumber()}}><i className="glyphicon glyphicon-triangle-left" /></FlatButton>}
+                <div className="currentPage" style={{display: "inline", fontWeight:"bold", fontSize:"25px"}}>{this.state.currentPage}</div>
+                <FlatButton onClick={() => {this.nextPageNumber()}}><i className="glyphicon glyphicon-triangle-right" /></FlatButton>
             </div>
+              ): null}  
           </div>
 
         )
