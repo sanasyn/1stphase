@@ -29,12 +29,18 @@ function getDistance(source, facilities){
 
 function handleZipExceptions(facilities) {
     const modifiedFacilities = facilities.map((facility) => {
+        if (facility.zip.indexOf('-') > -1) {
+            facility.zip = facility.zip.substring(0,5);
+        }
+
         const checkZip = zipcodes.lookup(facility.zip)
+
         if (typeof checkZip === 'undefined' && facility.country === 'United States') {
             facility.zip = zipcodes.lookupByName(facility.city, facility.state).length > 1 ? 
                 zipcodes.lookupByName(facility.city, facility.state)[1].zip : 
                 zipcodes.lookupByName(facility.city, facility.state)[0].zip;
-            return facility            
+            return facility
+
         }
         else if (typeof checkZip === 'undefined' && facility.country === 'Canada') {
             return knex
@@ -76,11 +82,11 @@ function facilityDistance(obj){
                 return row[0];
             })
             .then((dest) => doMath(obj.source, dest))
-            .catch((err) => console.log(err))
             .then((dist) => {
                 facility.distance = dist;
                 return facility
             })
+            .catch((err) => console.log(err))
     })
 
     return Promise.all(modifiedObj)
