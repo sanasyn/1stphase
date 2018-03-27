@@ -17,7 +17,7 @@ app.post("/resultDetails", require("./helpers/resultDetails"))
 app.post("/useReason", require("./helpers/useReason"))
 
 app.get('*', function(request, response) {
-   response.sendFile(path.resolve(__dirname, '/Client/build', 'index.html'));
+   response.sendFile(path.resolve(__dirname, './Client/public', 'index.html'));
  });
 
 app.listen(PORT, function() {
