@@ -20,9 +20,7 @@ function getConnectionOptions() {
 function getDistance(source, facilities){
     return handleZipExceptions(facilities)
         .then((modFacilities) => getSourceZip(source, modFacilities))
-        .catch((err) => console.log(err))
         .then((obj) => facilityDistance(obj))
-        .catch((err) => console.log(err))
         .then((facility) => {
             return facility.sort((a,b) => a.distance - b.distance)
         })
@@ -56,9 +54,7 @@ function handleZipExceptions(facilities) {
             })
             .catch((err) => console.log(err))
         }
-        else {
-            return facility
-        }
+        else return facility
     })
     return Promise.all(modifiedFacilities);
 }
