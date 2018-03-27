@@ -513,9 +513,7 @@ class Main extends Component {
       <RefreshIndicator
         size={200}
         status="loading"
-        top={150}
-        left={490}
-        style={{ zIndex:"100" }}
+        style={{ zIndex:"100", display:"absolute", top:"30%", left:"45%"}}
       />
     );
   }

@@ -48,8 +48,10 @@ function Quiz(props){
                 onTextChange={props.onTextChange}
                 />
                 
-
-                <FlatButton style={{backgroundColor: "#3b4e8c",fontSize:"2em", hoverColor: "#b63d34", marginTop:"20px", margin:"10px", color:'#fff'}} onClick={props.onClickBack}>BACK</FlatButton>
+                {props.counter > 0 ? (
+                    <FlatButton style={{backgroundColor: "#3b4e8c",fontSize:"2em", hoverColor: "#b63d34", marginTop:"20px", margin:"10px", color:'#fff'}} onClick={props.onClickBack}>BACK</FlatButton>
+                    ): null}
+                
 
                 <FlatButton style={{backgroundColor: "#3b4e8c", hoverColor: "#20759c", marginTop:"20px", margin:"10px", color:'#fff',fontSize:"2em",}} onClick={props.onClickNext}> NEXT</FlatButton>
 
