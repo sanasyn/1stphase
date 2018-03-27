@@ -15,6 +15,13 @@ app.post("/query", match.runQuery);
 app.post("/resultDetails", require("./helpers/resultDetails"))
 app.post("/useReason", require("./helpers/useReason"))
 
+server.get(
+  '/*',
+  (req, res) =>
+    console.log('*****') ||
+    res.sendFile(path.join(__dirname, '/Client/public/index.html'))
+);
+
 app.listen(PORT, function() {
    console.log("App listening on PORT " + PORT);
 });
